@@ -1,0 +1,258 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Eatformation System Version 0.8</title>
+    <link rel="icon" href="favicon.png" type="image/gif">
+
+    <!-- require jquery and bootstrap scripts -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    
+    <!-- adding style here -->
+    <style type="text/css">
+      header{
+        background-color: lightgray;
+        font-size:20px;
+        padding:15px;
+      }
+      header, .form-group{
+        margin-bottom: 3%;
+      }
+      .form-group{
+        width:50%;
+      }
+      #body{
+        margin-left:3%;
+        margin-right:3%;
+      }
+      .form-control{
+        margin: 8px;
+      }
+      #right_header{
+        width:20%;
+        font-size:15px;
+        margin-right:0px;
+      }
+      #left_header{
+        margin-left:0;
+        width:40%;
+        display:inline-block;
+      } 
+      #id {
+        width:49%;
+        display: inline-block;
+      }
+      table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+		  }j
+      td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+      }
+      tr:nth-child(even) {
+          background-color: #dddddd;
+      }
+	  .outer-div{
+	  	border: 2px solid #888888;
+		padding: 3px 1px 20px 1px;
+		margin-bottom: 50px;
+	  }
+    </style>
+  </head>
+  <body ng-app="application" ng-controller="appController">
+    <header>
+      <div id="left_header">Eatformation Traceability System 0.8</div>
+      <i id="right_header">With Hyperledger Fabric</i>
+    </header>
+
+    <div id="body">
+      <!--
+        모든 소고기 정보 조회 
+      -->
+      <div class="outer-div">
+        <div class="form-group">
+          <label>모든 소고기 정보</label>
+	  	  <!--
+          <p><input id="queryAllTuna" type="submit" value="Query" class="btn btn-primary" ng-click="queryAllTuna()"></p>
+		  -->
+		  <p><input id="queryAllCow" type="submit" value="Query" class="btn btn-primary" ng-click="queryAllCow()"></p>
+        </div>
+
+        <table id="all_cow" class="table" align="center">
+          <tr>
+            <th>이력번호</th>
+            <th>농장식별번호</th>
+            <th>개체식별번호</th>
+            <th>출생년월일</th>
+            <th>소의 종류</th>
+          </tr>
+
+          <tr ng-repeat="cow in all_cow">
+            <td>{{cow.Key}}</td>
+            <td>{{cow.farm_id}}</td>
+            <td>{{cow.cow_id}}</td>
+            <td>{{cow.cow_birthday}}</td>
+            <td>{{cow.cow_category}}</td>
+          </tr>
+        </table>
+      </div>
+	  
+	  
+      <div class="outer-div">  
+        <!--
+          이력 번호로 조회 
+        -->
+        <div class="form-group">
+          <label>이력 번호로 조회</label><br>
+          <h5 style="color:red;margin-bottom:2%" id="error_query">에러: 정확한 이력 번호(12자리)를 입력해 주세요.</h5>
+        
+          Enter a catch number: <input id="createName" class="form-control" type="text" placeholder="Ex: 002021864077" ng-model="trace_id">
+          <input id="querySubmit" type="submit" value="Query" class="btn btn-primary" ng-click="queryCow()">
+        </div>
+
+        <table id="query_cow" class="table" align="center">
+          <tr>
+            <th colspan="4">사육정보</th>
+          </tr>
+          <tr>
+            <th>이력번호</th>
+            <th>출생년월일</th>
+            <th>소의 종류</th>
+            <th>성별</th>
+          </tr>
+          <tr>
+            <td>{{query_cow.trace_id}}</td>
+            <td>{{query_cow.cow_birthday}}</td>
+            <td>{{query_cow.cow_category}}</td>
+            <td>{{query_cow.cow_sex}}</td>
+          </tr>
+        </table>
+
+        <table id="query_cow" class="table" align="center">
+          <tr>
+            <th colspan="4">소 출생 등 신고 정보</th>
+          </tr>
+          <tr>
+            <th>소유주</th>
+            <th>신고구분</th>
+            <th>년월일</th>
+            <th>사육지</th>
+          </tr>
+          <tr>
+            <td>{{query_cow.register_info[0].owner}}</td>
+            <td>{{query_cow.register_info[0].category}}</td>
+            <td>{{query_cow.register_info[0].date}}</td>
+            <td>{{query_cow.register_info[0].owner_address}}</td>
+          </tr>
+        </table>
+	    
+        <table id="query_cow" class="table" align="center">
+          <tr>
+            <th colspan="6">도축 및 포장 처리 정보</th>
+          </tr>
+          <tr>
+            <th>도축장</th>
+            <th>도축일자</th>
+            <th>도축검사결과</th>
+            <th>도체중</th>
+            <th>육질등급</th>
+            <th>도축처리업소</th>
+          </tr>
+          <tr>
+            <td>{{query_cow.slaughter_info.name}}</td>
+            <td>{{query_cow.slaughter_info.slaughter_date}}</td>
+            <td>{{query_cow.slaughter_info.cow_result}}</td>
+            <td>{{query_cow.slaughter_info.cow_weight}}</td>
+            <td>{{query_cow.slaughter_info.cow_grade}}</td>
+            <td>{{query_cow.slaughter_info.package_company}}</td>
+          </tr>
+        </table>
+	    
+        <table id="query_cow" class="table" align="center">
+          <tr>
+            <th colspan="6">구제역 백신접종 및 가축질병 검사 정보</th>
+            </tr>
+          <tr>
+            <th>구제역 예방접종최종일자</th>
+            <th>브루셀라 검사최종일자</th>
+            <th>브루셀라 검사결과</th>
+            <th>결핵 검사최종일자</th>
+            <th>결핵 검사결과</th>
+          </tr>
+          <tr>
+            <td>{{query_cow.foot_and_mouth}}</td>
+            <td>{{query_cow.brucelliasis}}</td>
+            <td>{{query_cow.brucelliasis}}</td>
+            <td>{{query_cow.tuberculosis}}</td>
+            <td>{{query_cow.tuberculosis}}</td>
+          </tr>
+        </table>
+      </div>	  
+
+      <div class="outer-div">
+        <div class="form-group">
+          <label>이력 번호 생성 (소 등록)</label>
+          <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{create_tuna}}</h5>
+          <br>
+          Enter catch id: <input class="form-control" type="text" placeholder="Ex: 11" ng-model="tuna.id">
+          Enter name of vessel: <input class="form-control" type="text" placeholder="Ex: 0239L" ng-model="tuna.vessel">
+          Enter longitude: <input id="createName" class="form-control" type="text" placeholder="Ex: 28.012" ng-model="tuna.longitude"> 
+          Enter latitude: <input id="createName" class="form-control" type="text" placeholder="Ex: 150.405" ng-model="tuna.latitude">
+          Enter timestamp: <input class="form-control" type="text" placeholder="Ex: 4982342301" ng-model="tuna.timestamp">
+          Enter name of holder: <input class="form-control" type="text" placeholder="Ex: Hansel" ng-model="tuna.holder">
+          <input id="createSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="recordTuna()"> 
+        </div>
+      </div>
+	  
+      <div class="outer-div">
+        <div class="form-group">
+          <label>도축 정보 등록</label>
+          <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{create_tuna}}</h5>
+          <br>
+          Enter catch id: <input class="form-control" type="text" placeholder="Ex: 11" ng-model="tuna.id">
+          Enter name of vessel: <input class="form-control" type="text" placeholder="Ex: 0239L" ng-model="tuna.vessel">
+          Enter longitude: <input id="createName" class="form-control" type="text" placeholder="Ex: 28.012" ng-model="tuna.longitude"> 
+          Enter latitude: <input id="createName" class="form-control" type="text" placeholder="Ex: 150.405" ng-model="tuna.latitude">
+          Enter timestamp: <input class="form-control" type="text" placeholder="Ex: 4982342301" ng-model="tuna.timestamp">
+          Enter name of holder: <input class="form-control" type="text" placeholder="Ex: Hansel" ng-model="tuna.holder">
+          <input id="createSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="recordTuna()"> 
+        </div>
+      </div>
+	  
+      <div class="outer-div">
+        <div class="form-group">
+          <label>도축 정보 등록</label>
+          <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{create_tuna}}</h5>
+          <br>
+          Enter catch id: <input class="form-control" type="text" placeholder="Ex: 11" ng-model="tuna.id">
+          Enter name of vessel: <input class="form-control" type="text" placeholder="Ex: 0239L" ng-model="tuna.vessel">
+          Enter longitude: <input id="createName" class="form-control" type="text" placeholder="Ex: 28.012" ng-model="tuna.longitude"> 
+          Enter latitude: <input id="createName" class="form-control" type="text" placeholder="Ex: 150.405" ng-model="tuna.latitude">
+          Enter timestamp: <input class="form-control" type="text" placeholder="Ex: 4982342301" ng-model="tuna.timestamp">
+          Enter name of holder: <input class="form-control" type="text" placeholder="Ex: Hansel" ng-model="tuna.holder">
+          <input id="createSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="recordTuna()"> 
+        </div>
+      </div>
+	
+      <div class="outer-div">  
+        <div class="form-group">
+          <label>포장 정보 등록</label><br>
+          <h5 style="color:green;margin-bottom:2%" id="success_holder">Success! Tx ID: {{change_holder}}</h5>
+          <h5 style="color:red;margin-bottom:2%" id="error_holder">Error: Please enter a valid Tuna Id</h5>
+          Enter a catch id between 1 and 10: <input class="form-control" name="assetSelect" placeholder="Ex: 1" ng-model="holder.id">
+          Enter name of new holder: <input class="form-control" name="assetSelect" placeholder="Ex: Barry" ng-model="holder.name">
+          <input id="transferSubmit" type="submit" value="Change" class="btn btn-primary" ng-click="changeHolder()">
+        </div>
+      </div>
+    </div>
+  </body>
+  <!-- requiring the angular page -->
+  <script type="text/javascript" src="app.js"> </script>
+</html>
