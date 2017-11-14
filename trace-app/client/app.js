@@ -46,6 +46,14 @@ app.controller('appController', function($scope, appFactory){
         });
     }
 
+    $scope.registerCow = function(){
+
+        appFactory.registerCow($scope.cow, function(data){
+            $scope.create_cow = data;
+            $("#success_create").show();
+        });
+    }
+
     $scope.recordCow = function(){
 
         appFactory.recordCow($scope.cow, function(data){
@@ -154,6 +162,16 @@ app.factory('appFactory', function($http){
         });
     }
 
+    factory.registerCow = function(data, callback){
+
+        var cow = data.trace_id + "-" + data.cow_birthday + "-" + data.cow_category + "-" + data.cow_sex + "-" +
+            data.owner + "-" + data.register_category + "-" + data.register_date + "-" + data.owner_address;
+
+        $http.get('/register_cow/'+cow).success(function(output){
+            callback(output)
+        });
+    }
+
     factory.recordCow = function(data, callback){
 
         data.location = data.longitude + ", "+ data.latitude;
@@ -176,5 +194,3 @@ app.factory('appFactory', function($http){
 
     return factory;
 });
-
-
