@@ -62,6 +62,14 @@ app.controller('appController', function($scope, appFactory){
         });
     }
 
+    $scope.updatePackageInfoCow = function(){
+
+        appFactory.updatePackageInfoCow($scope.package_info, function(data){
+            $scope.create_cow = data;
+            $("#success_create").show();
+        });
+    }
+
     $scope.recordCow = function(){
 
         appFactory.recordCow($scope.cow, function(data){
@@ -84,77 +92,12 @@ app.controller('appController', function($scope, appFactory){
         });             
     }    
 
-    // Default functions for Tuna application 
-    $scope.queryTuna = function(){
-
-        var id = $scope.tuna_id;
-
-        appFactory.queryTuna(id, function(data){
-            $scope.query_tuna = data;
-
-            if ($scope.query_tuna == "Could not locate tuna"){
-                console.log()
-                $("#error_query").show();
-            } else{
-                $("#error_query").hide();
-            }
-        });
-    }
-
-    $scope.recordTuna = function(){
-
-        appFactory.recordTuna($scope.tuna, function(data){
-            $scope.create_tuna = data;
-            $("#success_create").show();
-        });
-    }
-
-    $scope.changeHolder = function(){
-
-        appFactory.changeHolder($scope.holder, function(data){
-            $scope.change_holder = data;
-            if ($scope.change_holder == "Error: no tuna catch found"){
-                $("#error_holder").show();
-                $("#success_holder").hide();
-            } else{
-                $("#success_holder").show();
-                $("#error_holder").hide();
-            }
-        });
-    }
-
 });
 
 // Angular Factory
 app.factory('appFactory', function($http){
     
     var factory = {};
-
-    factory.queryTuna = function(id, callback){
-        $http.get('/get_tuna/'+id).success(function(output){
-            callback(output)
-        });
-    }
-
-    factory.recordTuna = function(data, callback){
-
-        data.location = data.longitude + ", "+ data.latitude;
-
-        var tuna = data.id + "-" + data.location + "-" + data.timestamp + "-" + data.holder + "-" + data.vessel;
-
-        $http.get('/add_tuna/'+tuna).success(function(output){
-            callback(output)
-        });
-    }
-
-    factory.changeHolder = function(data, callback){
-
-        var holder = data.id + "-" + data.name;
-
-        $http.get('/change_holder/'+holder).success(function(output){
-            callback(output)
-        });
-    }
 
     // For traceability system
     factory.queryAllCow = function(callback){
@@ -180,13 +123,24 @@ app.factory('appFactory', function($http){
         });
     }
 
-    factory.updateSlaughterInfoCow= function(data, callback){
+    factory.updateSlaughterInfoCow = function(data, callback){
 
         var slaughter_info = data.trace_id + "-" + data.slaughter_house + "-" + data.slaughter_date + "-" +
             data.cow_result + "-" + data.cow_weight + "-" + data.cow_grade + "-" + data.slaughter_company;
 
-        console.log(slaughter_info)
         $http.get('/update_slaughter_info_cow/'+slaughter_info).success(function(output){
+            callback(output)
+        });
+    }
+
+    factory.updatePackageInfoCow = function(data, callback){
+
+        var package_info = data.trace_id + "-" + data.company + "-" + data.company_address + "-" +
+            data.cow_part + "-" + data.package_amount + "-" + data.package_date;
+
+        console.log(package_info)
+        $http.get('/update_package_info_cow/'+package_info).success(function(output){
+            console.log("inside")
             callback(output)
         });
     }

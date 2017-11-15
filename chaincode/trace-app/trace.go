@@ -2,7 +2,6 @@
 
 /*
   Sample Chaincode based on Demonstrated Scenario
-
  This code is based on code written by the Hyperledger Fabric community.
   Original code can be found here: https://github.com/hyperledger/fabric-samples/blob/release/chaincode/fabcar/fabcar.go
 */
@@ -63,8 +62,11 @@ type Tuberculosis struct { // *결핵
 }
 
 type Package_info struct { // *포장정보
-    Package_part string `json:"package_part"` // 포장부위
-    Package_date string `json:"package_date"` // 포장일자
+    Company        string `json:"company"`          // 포장회사
+    Company_address string `json:"company_address"` // 포장회사주소
+    Cow_part       string `json:"cow_part"`         // 포장부위
+    Package_amount string `json:"package_amoount"`  // 포장단위(g)
+    Package_date   string `json:"package_date"`     // 포장일자
 }
 
 type Cow struct { // *소개체 정보
@@ -87,12 +89,10 @@ id                    이력번호
 farm_id               농장식별번호 (??소유주가 바뀌면 농장식별번호는 바뀌나??)
 farm_owner            농장경영자
 farm_address          농장소재지
-
 slaughterhouse        도축장
 slaughter_address     소재지
 slaughter_date        도축일자
 inspection_result     도축검사결과
-
 package_info = [
   {
      company_name     업소명
@@ -124,6 +124,7 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
     // Retrieve the requested Smart Contract function and arguments
     function, args := APIstub.GetFunctionAndParameters()
     // Route to the appropriate handler function to interact with the ledger
+
     if function == "queryCow" {
         return s.queryCow(APIstub, args)
     } else if function == "initLedger" {
@@ -138,6 +139,8 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
         return s.registerCow(APIstub, args)
     } else if function == "updateSlaughterInfoCow" {
         return s.updateSlaughterInfoCow(APIstub, args)
+    } else if function == "updatePackageInfoCow" {
+        return s.updatePackageInfoCow(APIstub, args)
     }
 
     return shim.Error("Invalid Smart Contract function name.")
@@ -430,7 +433,7 @@ func (s *SmartContract) registerCow(APIstub shim.ChaincodeStubInterface, args []
 func (s *SmartContract) updateSlaughterInfoCow(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
     if len(args) != 7 {
-        return shim.Error("Incorrect number of arguments. Expecting 7")
+        return shim.Error("[updateSlaughterInfoCow] Incorrect number of arguments. Expecting 7")
     }
 
     if len(args[0]) != 12 {
@@ -468,8 +471,52 @@ func (s *SmartContract) updateSlaughterInfoCow(APIstub shim.ChaincodeStubInterfa
 }
 
 /*
+ * The updatePackageInfoCow method *
+*/
+func (s *SmartContract) updatePackageInfoCow(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+    if len(args) != 6 {
+        return shim.Error("[updatePackageInfoCow] Incorrect number of arguments. Expecting 6")
+    }
+
+    if len(args[0]) != 12 {
+        return shim.Error("Inccorrect trace id. Expecting 12 digits")
+    }
+
+    package_amount, err := strconv.Atoi(args[4])
+    if err != nil {
+        // handle error
+        return shim.Error("Incorrect number for package amount")
+    }
+
+    cowAsBytes, _ := APIstub.GetState(args[0])
+    if cowAsBytes == nil {
+        return shim.Error("Could not locate cow")
+    }
+
+    var cow = Cow{}
+
+    json.Unmarshal(cowAsBytes, &cow)
+
+    var package_info Package_info
+    package_info = Package_info{ Company: args[1], Company_address: args[2], Cow_part: args[3],
+                                 Package_amount: package_amount, Package_date: args[5] }
+
+    fmt.Print("PackageInfo")
+    cow.Package_info = append(cow.Package_info, package_info)
+
+    cowAsBytes, _ = json.Marshal(cow)
+    err = APIstub.PutState(args[0], cowAsBytes)
+    if err != nil {
+        return shim.Error(fmt.Sprintf("Failed to register slaughter information: %s", args[0]))
+    }
+
+    return shim.Success(nil)
+}
+
+/*
  * main function *
-calls the Start function
+calls the Start functon
 The main function starts the chaincode in the container during instantiation.
 */
 func main() {
