@@ -73,15 +73,9 @@
     </header>
 
     <div id="body">
-      <!--
-        모든 소고기 정보 조회 
-      -->
       <div class="outer-div">
         <div class="form-group">
           <label>모든 소고기 정보</label>
-	  	  <!--
-          <p><input id="queryAllTuna" type="submit" value="Query" class="btn btn-primary" ng-click="queryAllTuna()"></p>
-		  -->
 		  <p><input id="queryAllCow" type="submit" value="Query" class="btn btn-primary" ng-click="queryAllCow()"></p>
         </div>
 
@@ -102,13 +96,9 @@
             <td>{{cow.cow_category}}</td>
           </tr>
         </table>
-      </div>
-	  
+      </div>  
 	  
       <div class="outer-div">  
-        <!--
-          이력 번호로 조회 
-        -->
         <div class="form-group">
           <label>이력 번호로 조회</label><br>
           <h5 style="color:red;margin-bottom:2%" id="error_query">에러: 정확한 이력 번호(12자리)를 입력해 주세요.</h5>
@@ -146,7 +136,7 @@
             <th>사육지</th>
           </tr>
           <tr>
-            <td>{{query_cow.register_info[0].owner}}</td>
+            <td>{{query_cow.register_info}}</td>
             <td>{{query_cow.register_info[0].category}}</td>
             <td>{{query_cow.register_info[0].date}}</td>
             <td>{{query_cow.register_info[0].owner_address}}</td>
@@ -166,12 +156,12 @@
             <th>도축처리업소</th>
           </tr>
           <tr>
-            <td>{{query_cow.slaughter_info.name}}</td>
+            <td>{{query_cow.slaughter_info.slaughter_house}}</td>
             <td>{{query_cow.slaughter_info.slaughter_date}}</td>
             <td>{{query_cow.slaughter_info.cow_result}}</td>
             <td>{{query_cow.slaughter_info.cow_weight}}</td>
             <td>{{query_cow.slaughter_info.cow_grade}}</td>
-            <td>{{query_cow.slaughter_info.package_company}}</td>
+            <td>{{query_cow.slaughter_info.slaughter_company}}</td>
           </tr>
         </table>
 	    
@@ -199,45 +189,37 @@
       <div class="outer-div">
         <div class="form-group">
           <label>이력 번호 생성 (소 등록)</label>
-          <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{create_tuna}}</h5>
+          <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{register_cow}}</h5>
           <br>
-          Enter catch id: <input class="form-control" type="text" placeholder="Ex: 11" ng-model="tuna.id">
-          Enter name of vessel: <input class="form-control" type="text" placeholder="Ex: 0239L" ng-model="tuna.vessel">
-          Enter longitude: <input id="createName" class="form-control" type="text" placeholder="Ex: 28.012" ng-model="tuna.longitude"> 
-          Enter latitude: <input id="createName" class="form-control" type="text" placeholder="Ex: 150.405" ng-model="tuna.latitude">
-          Enter timestamp: <input class="form-control" type="text" placeholder="Ex: 4982342301" ng-model="tuna.timestamp">
-          Enter name of holder: <input class="form-control" type="text" placeholder="Ex: Hansel" ng-model="tuna.holder">
-          <input id="createSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="recordTuna()"> 
+          이력번호: <input class="form-control" type="text" placeholder="Ex: 104021864078" ng-model="cow.trace_id">
+		  <!--
+          농장식별번호: <input class="form-control" type="text" placeholder="Ex: 0239L" ng-model="cow.farm_id">
+          개체식별번호: <input id="createName" class="form-control" type="text" placeholder="Ex: 28.012" ng-model="cow.cow_id"> 
+		  -->
+          출생년월일: <input id="createName" class="form-control" type="text" placeholder="Ex: 20121012" ng-model="cow.cow_birthday">
+          소의 종류: <input class="form-control" type="text" placeholder="Ex: 한우, 수입" ng-model="cow.cow_category">
+          성별: <input class="form-control" type="text" placeholder="Ex: 거세, 숫소, 암소" ng-model="cow.cow_sex">
+          소유주: <input id="createName" class="form-control" type="text" placeholder="Ex: 홍길동" ng-model="cow.owner">
+          신고구분: <input class="form-control" type="text" placeholder="Ex: 전산등록, 양수, 출하" ng-model="cow.register_category">
+          년월일: <input class="form-control" type="text" placeholder="Ex: 20130103" ng-model="cow.register_date">
+		  사육지 주소: <input class="form-control" type="text" placeholder="Ex: 경기도 양주시 만송통" ng-model="cow.owner_address">
+          <input id="createSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="registerCow()"> 
         </div>
       </div>
 	  
       <div class="outer-div">
         <div class="form-group">
           <label>도축 정보 등록</label>
-          <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{create_tuna}}</h5>
+          <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{update_slaughter_info_cow}}</h5>
           <br>
-          Enter catch id: <input class="form-control" type="text" placeholder="Ex: 11" ng-model="tuna.id">
-          Enter name of vessel: <input class="form-control" type="text" placeholder="Ex: 0239L" ng-model="tuna.vessel">
-          Enter longitude: <input id="createName" class="form-control" type="text" placeholder="Ex: 28.012" ng-model="tuna.longitude"> 
-          Enter latitude: <input id="createName" class="form-control" type="text" placeholder="Ex: 150.405" ng-model="tuna.latitude">
-          Enter timestamp: <input class="form-control" type="text" placeholder="Ex: 4982342301" ng-model="tuna.timestamp">
-          Enter name of holder: <input class="form-control" type="text" placeholder="Ex: Hansel" ng-model="tuna.holder">
-          <input id="createSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="recordTuna()"> 
-        </div>
-      </div>
-	  
-      <div class="outer-div">
-        <div class="form-group">
-          <label>도축 정보 등록</label>
-          <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{create_tuna}}</h5>
-          <br>
-          Enter catch id: <input class="form-control" type="text" placeholder="Ex: 11" ng-model="tuna.id">
-          Enter name of vessel: <input class="form-control" type="text" placeholder="Ex: 0239L" ng-model="tuna.vessel">
-          Enter longitude: <input id="createName" class="form-control" type="text" placeholder="Ex: 28.012" ng-model="tuna.longitude"> 
-          Enter latitude: <input id="createName" class="form-control" type="text" placeholder="Ex: 150.405" ng-model="tuna.latitude">
-          Enter timestamp: <input class="form-control" type="text" placeholder="Ex: 4982342301" ng-model="tuna.timestamp">
-          Enter name of holder: <input class="form-control" type="text" placeholder="Ex: Hansel" ng-model="tuna.holder">
-          <input id="createSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="recordTuna()"> 
+		  이력번호: <input class="form-control" type="text" placeholder="Ex: 104021864078" ng-model="slaughter_info.trace_id">
+          도축장: <input class="form-control" type="text" placeholder="Ex: 우림축산 (경기도 동두천시 동두천동)" ng-model="slaughter_info.slaughter_house">
+          도축일자: <input class="form-control" type="text" placeholder="Ex: 20090611" ng-model="slaughter_info.slaughter_date">
+          도축검사결과: <input id="createName" class="form-control" type="text" placeholder="Ex: 합격, 불합격" ng-model="slaughter_info.cow_result"> 
+          도체중: <input id="createName" class="form-control" type="text" placeholder="Ex: 409" ng-model="slaughter_info.cow_weight">
+          육질등급: <input class="form-control" type="text" placeholder="Ex: 1++, 1+, 1, 2" ng-model="slaughter_info.cow_grade">
+          도축처리업소: <input class="form-control" type="text" placeholder="Ex: 양주축협가공공장 (경기도 양주시 고읍동)" ng-model="slaughter_info.slaughter_company">
+          <input id="updateSlaughterSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="updateSlaughterInfoCow()"> 
         </div>
       </div>
 	

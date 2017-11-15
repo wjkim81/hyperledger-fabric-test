@@ -54,6 +54,14 @@ app.controller('appController', function($scope, appFactory){
         });
     }
 
+    $scope.updateSlaughterInfoCow = function(){
+
+        appFactory.updateSlaughterInfoCow($scope.slaughter_info, function(data){
+            $scope.create_cow = data;
+            $("#success_create").show();
+        });
+    }
+
     $scope.recordCow = function(){
 
         appFactory.recordCow($scope.cow, function(data){
@@ -168,6 +176,17 @@ app.factory('appFactory', function($http){
             data.owner + "-" + data.register_category + "-" + data.register_date + "-" + data.owner_address;
 
         $http.get('/register_cow/'+cow).success(function(output){
+            callback(output)
+        });
+    }
+
+    factory.updateSlaughterInfoCow= function(data, callback){
+
+        var slaughter_info = data.trace_id + "-" + data.slaughter_house + "-" + data.slaughter_date + "-" +
+            data.cow_result + "-" + data.cow_weight + "-" + data.cow_grade + "-" + data.slaughter_company;
+
+        console.log(slaughter_info)
+        $http.get('/update_slaughter_info_cow/'+slaughter_info).success(function(output){
             callback(output)
         });
     }
