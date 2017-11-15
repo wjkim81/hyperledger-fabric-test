@@ -18,7 +18,7 @@ import (
     "bytes"
     "encoding/json"
     "fmt"
-    //"strconv"
+    "strconv"
 
     "github.com/hyperledger/fabric/core/chaincode/shim"
     sc "github.com/hyperledger/fabric/protos/peer"
@@ -39,12 +39,12 @@ type Register_info struct { // *소출생 등 신고정보[]
 }
 
 type Slaughter_info struct { // *도축정보
-    Name            string `json:"name"`            // 도축장
+    Slaughter_house string `json:"slaughter_house"` // 도축장
     Slaughter_date  string `json:"slaughter_date"`  // 도축일자
     Cow_result      string `json:"cow_result"`      // 도축검사결과
     Cow_weight      int    `json:"cow_weight"`      // 도체중
     Cow_grade       string `json:"cow_grade"`       // 육질등급
-    Package_company string `json:"package_company"` // 도축처리업소
+    Slaughter_company string `json:"slaughter_company"` // 도축처리업소
 }
 
 type Foot_and_mouth struct { // *구제역
@@ -136,6 +136,8 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
         return s.changeCowHolder(APIstub, args)
     } else if function == "registerCow" {
         return s.registerCow(APIstub, args)
+    } else if function == "updateSlaughterInfoCow" {
+        return s.updateSlaughterInfoCow(APIstub, args)
     }
 
     return shim.Error("Invalid Smart Contract function name.")
@@ -192,12 +194,12 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface) sc.Respo
                 },
             },
             Slaughter_info: Slaughter_info{
-                Name:            "우림축산 (경기도 동두천시 동두천동)",
+                Slaughter_house: "우림축산 (경기도 동두천시 동두천동)",
                 Slaughter_date:  "20090611",
                 Cow_result:      "합격",
                 Cow_weight:      409,
                 Cow_grade:       "1+",
-                Package_company: "양주축협가공공장 (경기도 양주시 고읍동)",
+                Slaughter_company: "양주축협가공공장 (경기도 양주시 고읍동)",
             },
             Foot_and_mouth: []Foot_and_mouth{
                 Foot_and_mouth{
@@ -246,12 +248,12 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface) sc.Respo
                 },
             },
             Slaughter_info: Slaughter_info{
-                Name:            "우림축산 (경기도 동두천시 동두천동)",
+                Slaughter_house: "우림축산 (경기도 동두천시 동두천동)",
                 Slaughter_date:  "20090611",
                 Cow_result:      "합격",
                 Cow_weight:      409,
                 Cow_grade:       "1+",
-                Package_company: "양주축협가공공장 (경기도 양주시 고읍동)",
+                Slaughter_company: "양주축협가공공장 (경기도 양주시 고읍동)",
             },
             Foot_and_mouth: []Foot_and_mouth{
                 Foot_and_mouth{
@@ -298,7 +300,8 @@ func (s *SmartContract) recordCow(APIstub shim.ChaincodeStubInterface, args []st
         return shim.Error("Incorrect number of arguments. Expecting 5")
     }
 
-    var cow = Cow{Trace_id: args[1], Farm_id: args[2], Cow_id: args[3], Cow_birthday: args[4]}
+    var cow = Cow{Trace_id: args[1], Farm_id: args[2], Cow_id: args[3], Cow_birthday: args[4],
+                  Cow_category: args[5], Cow_sex: args[6]}
 
     cowAsBytes, _ := json.Marshal(cow)
     err := APIstub.PutState(args[0], cowAsBytes)
@@ -390,30 +393,75 @@ func (s *SmartContract) changeCowHolder(APIstub shim.ChaincodeStubInterface, arg
 
 /*
  * The registerCow method *
-The data in the world state can be updated with who has possession.
-This function takes in 2 arguments, cow id and new holder name.
 */
 func (s *SmartContract) registerCow(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
-    if len(args) != 2 {
-        return shim.Error("Incorrect number of arguments. Expecting 2")
+    if len(args) != 8 {
+        return shim.Error("Incorrect number of arguments. Expecting 5")
+    }
+    
+    if len(args[0]) != 12 {
+        return shim.Error("Inccorrect trace id. Expecting 12 digits")
+    }
+
+    var register_info []Register_info
+    var farm_id string = args[0][1:7] 
+    var cow_id string = args[0][7:]
+
+    register_info = append(register_info, Register_info{ Owner: args[4], Category: args[5], Date: args[6], Owner_address: args[7] })
+
+    var cow = Cow{ Trace_id: args[0], Farm_id: farm_id, Cow_id: cow_id, Cow_birthday: args[1],
+        Cow_category: args[2], Cow_sex: args[3],
+        //Register_info: Register_info[0]{ Owner: args[6], Category: args[7], Date: args[8], Owner_address: args[9] }}
+        Register_info: register_info}
+
+    cowAsBytes, _ := json.Marshal(cow)
+    err := APIstub.PutState(args[0], cowAsBytes)
+    if err != nil {
+        return shim.Error(fmt.Sprintf("Failed to register: %s", args[0]))
+    }
+
+    return shim.Success(nil)
+}
+
+/*
+ * The updateSlaughterInfoCow method *
+*/
+func (s *SmartContract) updateSlaughterInfoCow(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+    if len(args) != 7 {
+        return shim.Error("Incorrect number of arguments. Expecting 7")
+    }
+
+    if len(args[0]) != 12 {
+        return shim.Error("Inccorrect trace id. Expecting 12 digits")
+    }
+
+    weight, err := strconv.Atoi(args[4])
+    if err != nil {
+        // handle error
+        return shim.Error("Incorrect number for cow weight")
     }
 
     cowAsBytes, _ := APIstub.GetState(args[0])
     if cowAsBytes == nil {
         return shim.Error("Could not locate cow")
     }
-    cow := Cow{}
+
+    var cow = Cow{}
 
     json.Unmarshal(cowAsBytes, &cow)
-    // Normally check that the specified argument is a valid holder of cow
-    // we are skipping this check for this example
-    cow.Cow_birthday = args[1]
+
+    var slaughter_info Slaughter_info
+    slaughter_info = Slaughter_info{ Slaughter_house: args[1], Slaughter_date: args[2], Cow_result: args[3],
+                                     Cow_weight: weight, Cow_grade: args[5], Slaughter_company: args[6] }
+
+    cow.Slaughter_info = slaughter_info
 
     cowAsBytes, _ = json.Marshal(cow)
-    err := APIstub.PutState(args[0], cowAsBytes)
+    err = APIstub.PutState(args[0], cowAsBytes)
     if err != nil {
-        return shim.Error(fmt.Sprintf("Failed to change cow holder: %s", args[0]))
+        return shim.Error(fmt.Sprintf("Failed to register slaughter information: %s", args[0]))
     }
 
     return shim.Success(nil)
