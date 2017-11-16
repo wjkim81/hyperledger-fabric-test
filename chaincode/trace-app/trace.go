@@ -65,7 +65,7 @@ type Package_info struct { // *포장정보
     Company        string `json:"company"`          // 포장회사
     Company_address string `json:"company_address"` // 포장회사주소
     Cow_part       string `json:"cow_part"`         // 포장부위
-    Package_amount string `json:"package_amoount"`  // 포장단위(g)
+    Package_amount int    `json:"package_amoount"`  // 포장단위(g)
     Package_date   string `json:"package_date"`     // 포장일자
 }
 
@@ -78,6 +78,7 @@ type Cow struct { // *소개체 정보
     Cow_sex        string           `json:"cow_sex"`        // 성별
     Register_info  []Register_info  `json:"register_info"`  // 소출생등신고정보[]
     Slaughter_info Slaughter_info   `json:"slaughter_info"` // 도축정보
+    Package_info   []Package_info   `json:"package_info"`   // 포장정보[]
     Foot_and_mouth []Foot_and_mouth `json:"foot_and_mouth"` // 구제역[]
     Brucelliasis   []Brucelliasis   `json:"brucelliasis"`   // 브루셀[]
     Tuberculosis   []Tuberculosis   `json:"tuberculosis"`   // 결핵[]
@@ -502,7 +503,6 @@ func (s *SmartContract) updatePackageInfoCow(APIstub shim.ChaincodeStubInterface
     package_info = Package_info{ Company: args[1], Company_address: args[2], Cow_part: args[3],
                                  Package_amount: package_amount, Package_date: args[5] }
 
-    fmt.Print("PackageInfo")
     cow.Package_info = append(cow.Package_info, package_info)
 
     cowAsBytes, _ = json.Marshal(cow)
