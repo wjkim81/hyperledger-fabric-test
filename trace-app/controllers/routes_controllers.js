@@ -1,22 +1,21 @@
 //SPDX-License-Identifier: Apache-2.0
 
 var obj = require('../controllers/controller.js');
+var path          = require('path');
 
 module.exports = function(app){
 
   app.get('/register', function(req, res) {
-    console.log('register')
-    //res.send('register');
-    res.sendFile('./views/register.html')
+    res.sendFile(path.join(__dirname, '../views', 'register.html'));
   });
-  app.get('/query_with_id', function(req,res){
-    res.send('query_with_id');
+  app.get('/query', function(req,res){
+    res.sendFile(path.join(__dirname, '../views', 'query.html'));
   });
   app.get('/update_butcher', function(req,res){
-    res.send('update_butcher');
+    res.sendFile(path.join(__dirname, '../views', 'butcher.html'));
   });
   app.get('/update_package', function(req,res){
-    res.send('update_package');
+    res.sendFile(path.join(__dirname, '../views', 'package.html'));
   });
 
 
