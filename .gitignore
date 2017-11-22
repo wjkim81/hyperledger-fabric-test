@@ -1,7 +1,3 @@
 chaincode/trace-app/trace
 trace-app/node_modules
 trace-app/bin
-gitadd.sh
-gitcommit.sh
-gitpush.sh
-gitall.sh
