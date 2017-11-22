@@ -1,0 +1,95 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Eatformation System Version 0.8</title>
+    <link rel="icon" href="favicon.png" type="image/gif">
+
+    <!-- require jquery and bootstrap scripts -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    
+    <!-- adding style here -->
+    <style type="text/css">
+      header{
+        background-color: lightgray;
+        font-size:20px;
+        padding:15px;
+      }
+      header, .form-group{
+        margin-bottom: 3%;
+      }
+      .form-group{
+        width:50%;
+      }
+      #body{
+        margin-left:3%;
+        margin-right:3%;
+      }
+      .form-control{
+        margin: 8px;
+      }
+      #right_header{
+        width:20%;
+        font-size:15px;
+        margin-right:0px;
+      }
+      #left_header{
+        margin-left:0;
+        width:40%;
+        display:inline-block;
+      } 
+      #id {
+        width:49%;
+        display: inline-block;
+      }
+      table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+		  }j
+      td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+      }
+      tr:nth-child(even) {
+          background-color: #dddddd;
+      }
+	  .outer-div{
+	  	border: 2px solid #888888;
+		padding: 3px 1px 20px 1px;
+		margin-bottom: 50px;
+	  }
+    </style>
+  </head>
+  <body ng-app="application" ng-controller="appController">
+    <header>
+      <div id="left_header">Eatformation Traceability System 0.8</div>
+      <i id="right_header">With Hyperledger Fabric</i>
+    </header>
+
+    <div id="body">
+      <div class="outer-div">
+        <div class="form-group">
+          <label>도축 정보 등록</label>
+          <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{update_slaughter_info_cow}}</h5>
+          <br>
+          이력번호: <input class="form-control" type="text" placeholder="Ex: 104021864078" ng-model="slaughter_info.trace_id">
+          도축장: <input class="form-control" type="text" placeholder="Ex: 우림축산 (경기도 동두천시 동두천동)" ng-model="slaughter_info.slaughter_house">
+          도축일자: <input class="form-control" type="text" placeholder="Ex: 20090611" ng-model="slaughter_info.slaughter_date">
+          도축검사결과: <input id="createName" class="form-control" type="text" placeholder="Ex: 합격, 불합격" ng-model="slaughter_info.cow_result"> 
+          도체중: <input id="createName" class="form-control" type="text" placeholder="Ex: 409" ng-model="slaughter_info.cow_weight">
+          육질등급: <input class="form-control" type="text" placeholder="Ex: 1++, 1+, 1, 2" ng-model="slaughter_info.cow_grade">
+          도축처리업소: <input class="form-control" type="text" placeholder="Ex: 양주축협가공공장 (경기도 양주시 고읍동)" ng-model="slaughter_info.slaughter_company">
+          <input id="updateSlaughterSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="updateSlaughterInfoCow()"> 
+        </div>
+      </div>
+    </div>
+  </body>
+  <!-- requiring the angular page -->
+  <script type="text/javascript" src="app.js"> </script>
+</html>
