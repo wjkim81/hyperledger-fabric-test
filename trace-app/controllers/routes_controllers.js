@@ -1,18 +1,24 @@
 //SPDX-License-Identifier: Apache-2.0
 
 var obj = require('../controllers/controller.js');
+var path          = require('path');
 
 module.exports = function(app){
 
-  app.get('/get_tuna/:id', function(req, res){
-    obj.get_tuna(req, res);
+  app.get('/register', function(req, res) {
+    res.sendFile(path.join(__dirname, '../views', 'register.html'));
   });
-  app.get('/add_tuna/:tuna', function(req, res){
-    obj.add_tuna(req, res);
+  app.get('/query', function(req,res){
+    res.sendFile(path.join(__dirname, '../views', 'query.html'));
   });
-  app.get('/tuna_change_holder/:holder', function(req, res){
-    obj.change_holder(req, res);
+  app.get('/update_butcher', function(req,res){
+    res.sendFile(path.join(__dirname, '../views', 'butcher.html'));
   });
+  app.get('/update_package', function(req,res){
+    res.sendFile(path.join(__dirname, '../views', 'package.html'));
+  });
+
+
   app.get('/get_cow/:id', function(req, res){
     obj.get_cow(req, res);
   });

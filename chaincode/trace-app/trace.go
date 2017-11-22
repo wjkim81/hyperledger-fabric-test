@@ -65,11 +65,7 @@ type Package_info struct { // *포장정보
     Company        string `json:"company"`          // 포장회사
     Company_address string `json:"company_address"` // 포장회사주소
     Cow_part       string `json:"cow_part"`         // 포장부위
-<<<<<<< HEAD
     Package_amount int    `json:"package_amount"`  // 포장단위(g)
-=======
-    Package_amount int    `json:"package_amoount"`  // 포장단위(g)
->>>>>>> c7064045e57a27b1e36890c820fa0b1c46bb64b3
     Package_date   string `json:"package_date"`     // 포장일자
 }
 
@@ -82,11 +78,7 @@ type Cow struct { // *소개체 정보
     Cow_sex        string           `json:"cow_sex"`        // 성별
     Register_info  []Register_info  `json:"register_info"`  // 소출생등신고정보[]
     Slaughter_info Slaughter_info   `json:"slaughter_info"` // 도축정보
-<<<<<<< HEAD
-    Package_info    []Package_info   `json:"package_info"`   // 포장정보[]
-=======
     Package_info   []Package_info   `json:"package_info"`   // 포장정보[]
->>>>>>> c7064045e57a27b1e36890c820fa0b1c46bb64b3
     Foot_and_mouth []Foot_and_mouth `json:"foot_and_mouth"` // 구제역[]
     Brucelliasis   []Brucelliasis   `json:"brucelliasis"`   // 브루셀[]
     Tuberculosis   []Tuberculosis   `json:"tuberculosis"`   // 결핵[]

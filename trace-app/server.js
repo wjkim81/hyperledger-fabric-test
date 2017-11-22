@@ -16,7 +16,7 @@ var os            = require('os');
 // Load all of our middleware
 // configure app to use bodyParser()
 // this will let us get the data from a POST
-// app.use(express.static(__dirname + '/client'));
+// app.use(express.static(__dirname + './client'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -24,10 +24,12 @@ app.use(bodyParser.json());
 var app = express();
 
 // this line requires and runs the code from our routes.js file and passes it app
-require('./routes/routes.js')(app);
+require('./controllers/routes_controllers.js')(app);
 
 // set up a static file server that points to the "client" directory
 app.use(express.static(path.join(__dirname, './client')));
+
+
 
 // Save our port
 var port = process.env.PORT || 8000;
