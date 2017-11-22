@@ -24,27 +24,15 @@ app.use(bodyParser.json());
 var app = express();
 
 // this line requires and runs the code from our routes.js file and passes it app
-<<<<<<< HEAD
 require('./routes/routes.js')(app);
-=======
-require('./routes.js')(app);
->>>>>>> c7064045e57a27b1e36890c820fa0b1c46bb64b3
 
 // set up a static file server that points to the "client" directory
 app.use(express.static(path.join(__dirname, './client')));
 
 // Save our port
-<<<<<<< HEAD
-var port = process.env.PORT || 3000;
-=======
 var port = process.env.PORT || 8000;
->>>>>>> c7064045e57a27b1e36890c820fa0b1c46bb64b3
 
 // Start the server and listen on port 
 app.listen(port, '0.0.0.0', function(){
   console.log("Live on port: " + port);
 });
-<<<<<<< HEAD
-=======
-
->>>>>>> c7064045e57a27b1e36890c820fa0b1c46bb64b3
