@@ -76,7 +76,11 @@
       <div class="outer-div">
         <div class="form-group">
           <label>모든 소고기 정보</label>
+<<<<<<< HEAD
           <p><input id="queryAllCow" type="submit" value="Query" class="btn btn-primary" ng-click="queryAllCow()"></p>
+=======
+		  <p><input id="queryAllCow" type="submit" value="Query" class="btn btn-primary" ng-click="queryAllCow()"></p>
+>>>>>>> c7064045e57a27b1e36890c820fa0b1c46bb64b3
         </div>
 
         <table id="all_cow" class="table" align="center">
@@ -173,6 +177,7 @@
             <th>포장회사</th>
             <th>포장회사주소</th>
             <th>포장부위</th>
+<<<<<<< HEAD
             <th>포장단위(g)</th>
             <th>포장일자</th>
           </tr>
@@ -182,6 +187,17 @@
             <td>{{package_info.cow_part}}</td>
             <td>{{package_info.package_amount}}</td>
             <td>{{package_info.package_date}}</td>
+=======
+			<th>포장단위(g)</th>
+            <th>포장일자</th>
+          </tr>
+          <tr>
+            <td>{{query_cow.package_info[0].company}}</td>
+            <td>{{query_cow.package_info[0].company_address}}</td>
+            <td>{{query_cow.package_info[0].cow_part}}</td>
+            <td>{{query_cow.package_info[0].package_amount}}</td>
+            <td>{{query_cow.package_info[0].package_date}}</td>
+>>>>>>> c7064045e57a27b1e36890c820fa0b1c46bb64b3
           </tr>
         </table>
 	    
@@ -212,17 +228,28 @@
           <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{register_cow}}</h5>
           <br>
           이력번호: <input class="form-control" type="text" placeholder="Ex: 104021864078" ng-model="cow.trace_id">
+<<<<<<< HEAD
           <!--
           농장식별번호: <input class="form-control" type="text" placeholder="Ex: 0239L" ng-model="cow.farm_id">
           개체식별번호: <input id="createName" class="form-control" type="text" placeholder="Ex: 28.012" ng-model="cow.cow_id"> 
           -->
+=======
+		  <!--
+          농장식별번호: <input class="form-control" type="text" placeholder="Ex: 0239L" ng-model="cow.farm_id">
+          개체식별번호: <input id="createName" class="form-control" type="text" placeholder="Ex: 28.012" ng-model="cow.cow_id"> 
+		  -->
+>>>>>>> c7064045e57a27b1e36890c820fa0b1c46bb64b3
           출생년월일: <input id="createName" class="form-control" type="text" placeholder="Ex: 20121012" ng-model="cow.cow_birthday">
           소의 종류: <input class="form-control" type="text" placeholder="Ex: 한우, 수입" ng-model="cow.cow_category">
           성별: <input class="form-control" type="text" placeholder="Ex: 거세, 숫소, 암소" ng-model="cow.cow_sex">
           소유주: <input id="createName" class="form-control" type="text" placeholder="Ex: 홍길동" ng-model="cow.owner">
           신고구분: <input class="form-control" type="text" placeholder="Ex: 전산등록, 양수, 출하" ng-model="cow.register_category">
           년월일: <input class="form-control" type="text" placeholder="Ex: 20130103" ng-model="cow.register_date">
+<<<<<<< HEAD
           사육지 주소: <input class="form-control" type="text" placeholder="Ex: 경기도 양주시 만송통" ng-model="cow.owner_address">
+=======
+		  사육지 주소: <input class="form-control" type="text" placeholder="Ex: 경기도 양주시 만송통" ng-model="cow.owner_address">
+>>>>>>> c7064045e57a27b1e36890c820fa0b1c46bb64b3
           <input id="createSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="registerCow()"> 
         </div>
       </div>
@@ -232,7 +259,11 @@
           <label>도축 정보 등록</label>
           <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{update_slaughter_info_cow}}</h5>
           <br>
+<<<<<<< HEAD
           이력번호: <input class="form-control" type="text" placeholder="Ex: 104021864078" ng-model="slaughter_info.trace_id">
+=======
+		  이력번호: <input class="form-control" type="text" placeholder="Ex: 104021864078" ng-model="slaughter_info.trace_id">
+>>>>>>> c7064045e57a27b1e36890c820fa0b1c46bb64b3
           도축장: <input class="form-control" type="text" placeholder="Ex: 우림축산 (경기도 동두천시 동두천동)" ng-model="slaughter_info.slaughter_house">
           도축일자: <input class="form-control" type="text" placeholder="Ex: 20090611" ng-model="slaughter_info.slaughter_date">
           도축검사결과: <input id="createName" class="form-control" type="text" placeholder="Ex: 합격, 불합격" ng-model="slaughter_info.cow_result"> 
@@ -248,11 +279,19 @@
           <label>포장 정보 등록</label>
           <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{update_package_info_cow}}</h5>
           <br>
+<<<<<<< HEAD
           이력번호: <input class="form-control" type="text" placeholder="Ex: 104021864078" ng-model="package_info.trace_id">
           포장회사: <input class="form-control" type="text" placeholder="Ex: 우림축산 (경기도 동두천시 동두천동)" ng-model="package_info.company">
           포장회사주소: <input class="form-control" type="text" placeholder="Ex: 경기도 양주시 고읍동" ng-model="package_info.company_address">
           포장부위: <input id="createName" class="form-control" type="text" placeholder="Ex: 안심, 등심, 채끝살 등등" ng-model="package_info.cow_part">
           포장단위(g): <input id="createName" class="form-control" type="text" placeholder="Ex: 1000" ng-model="package_info.package_amount"> 
+=======
+		  이력번호: <input class="form-control" type="text" placeholder="Ex: 104021864078" ng-model="package_info.trace_id">
+          포장회사: <input class="form-control" type="text" placeholder="Ex: 우림축산 (경기도 동두천시 동두천동)" ng-model="package_info.company">
+          포장회사주소: <input class="form-control" type="text" placeholder="Ex: 경기도 양주시 고읍동" ng-model="package_info.company_address">
+          포장부위: <input id="createName" class="form-control" type="text" placeholder="Ex: 안심, 등심, 채끝살 등등" ng-model="package_info.cow_part">
+		  포장단위(g): <input id="createName" class="form-control" type="text" placeholder="Ex: 1000" ng-model="package_info.package_amount"> 
+>>>>>>> c7064045e57a27b1e36890c820fa0b1c46bb64b3
           포장일자: <input id="createName" class="form-control" type="text" placeholder="Ex: 20140304" ng-model="package_info.package_date">
           <input id="updatePackageSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="updatePackageInfoCow()"> 
         </div>
