@@ -1,13 +1,7 @@
 chaincode/trace-app/trace
 trace-app/node_modules
 trace-app/bin
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
 gitadd.sh
 gitcommit.sh
 gitpush.sh
 gitall.sh
->>>>>>> 55ec2f945530176b0727e3fde0153d50f64ab93c
->>>>>>> c7064045e57a27b1e36890c820fa0b1c46bb64b3
