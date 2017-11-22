@@ -5,7 +5,9 @@ var obj = require('../controllers/controller.js');
 module.exports = function(app){
 
   app.get('/register', function(req, res) {
-    res.send('register');
+    console.log('register')
+    //res.send('register');
+    res.sendFile('./views/register.html')
   });
   app.get('/query_with_id', function(req,res){
     res.send('query_with_id');
