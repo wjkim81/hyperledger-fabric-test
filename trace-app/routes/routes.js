@@ -4,15 +4,20 @@ var obj = require('../controllers/controller.js');
 
 module.exports = function(app){
 
-  app.get('/get_tuna/:id', function(req, res){
-    obj.get_tuna(req, res);
+  app.get('/register', function(req, res) {
+    res.send('register');
   });
-  app.get('/add_tuna/:tuna', function(req, res){
-    obj.add_tuna(req, res);
+  app.get('/query_with_id', function(req,res){
+    res.send('query_with_id');
   });
-  app.get('/tuna_change_holder/:holder', function(req, res){
-    obj.change_holder(req, res);
+  app.get('/update_butcher', function(req,res){
+    res.send('update_butcher');
   });
+  app.get('/update_package', function(req,res){
+    res.send('update_package');
+  });
+
+
   app.get('/get_cow/:id', function(req, res){
     obj.get_cow(req, res);
   });

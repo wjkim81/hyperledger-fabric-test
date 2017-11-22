@@ -38,15 +38,10 @@ app.controller('appController', function($scope, appFactory){
             $scope.query_cow = data;
 
             if ($scope.query_cow == "Could not locate cow"){
-<<<<<<< HEAD
-=======
-                console.log()
->>>>>>> c7064045e57a27b1e36890c820fa0b1c46bb64b3
                 $("#error_query").show();
             } else{
                 $("#error_query").hide();
             }
-<<<<<<< HEAD
 
             //var array = [];
             //for (var i=0; i < data.package_info.length; i++){
@@ -57,8 +52,6 @@ app.controller('appController', function($scope, appFactory){
             //}
             //$scope.all_package_info = array;
             $scope.all_package_info = data.package_info; 
-=======
->>>>>>> c7064045e57a27b1e36890c820fa0b1c46bb64b3
         });
     }
 
@@ -154,13 +147,7 @@ app.factory('appFactory', function($http){
         var package_info = data.trace_id + "-" + data.company + "-" + data.company_address + "-" +
             data.cow_part + "-" + data.package_amount + "-" + data.package_date;
 
-<<<<<<< HEAD
         $http.get('/update_package_info_cow/'+package_info).success(function(output){
-=======
-        console.log(package_info)
-        $http.get('/update_package_info_cow/'+package_info).success(function(output){
-            console.log("inside")
->>>>>>> c7064045e57a27b1e36890c820fa0b1c46bb64b3
             callback(output)
         });
     }

@@ -13,6 +13,11 @@ var path          = require('path');
 var util          = require('util');
 var os            = require('os');
 
+// Set routes
+//var producer = require('./routes/producer')
+//var distributor = require('./route/distributor')
+//var consumer = requre('./route/consumer')
+
 // Load all of our middleware
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -28,6 +33,8 @@ require('./routes/routes.js')(app);
 
 // set up a static file server that points to the "client" directory
 app.use(express.static(path.join(__dirname, './client')));
+
+
 
 // Save our port
 var port = process.env.PORT || 8000;
