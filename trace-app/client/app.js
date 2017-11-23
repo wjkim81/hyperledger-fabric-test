@@ -9,6 +9,9 @@ app.controller('appController', function($scope, appFactory){
 
     $("#success_holder").hide();
     $("#success_create").hide();
+    $("#success_register").hide();
+    $("#success_update_butcher").hide();
+    $("#success_update_package").hide();
     $("#error_holder").hide();
     $("#error_query").hide();
 
@@ -58,8 +61,8 @@ app.controller('appController', function($scope, appFactory){
     $scope.registerCow = function(){
 
         appFactory.registerCow($scope.cow, function(data){
-            $scope.create_cow = data;
-            $("#success_create").show();
+            $scope.register_cow = data;
+            $("#success_register").show();
         });
     }
 
@@ -67,7 +70,7 @@ app.controller('appController', function($scope, appFactory){
 
         appFactory.updateSlaughterInfoCow($scope.slaughter_info, function(data){
             $scope.create_cow = data;
-            $("#success_create").show();
+            $("#success_update_butcher").show();
         });
     }
 
@@ -75,7 +78,7 @@ app.controller('appController', function($scope, appFactory){
 
         appFactory.updatePackageInfoCow($scope.package_info, function(data){
             $scope.create_cow = data;
-            $("#success_create").show();
+            $("#success_update_package").show();
         });
     }
 
