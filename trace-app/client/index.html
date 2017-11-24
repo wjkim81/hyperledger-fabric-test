@@ -197,11 +197,11 @@
             <th>결핵 검사결과</th>
           </tr>
           <tr>
-            <td>{{query_cow.foot_and_mouth}}</td>
-            <td>{{query_cow.brucelliasis}}</td>
-            <td>{{query_cow.brucelliasis}}</td>
-            <td>{{query_cow.tuberculosis}}</td>
-            <td>{{query_cow.tuberculosis}}</td>
+            <td>{{query_cow.foot_and_mouth[0].vaccine_date}}</td>
+            <td>{{query_cow.brucelliasis[0].vaccine_date}}</td>
+            <td>{{query_cow.brucelliasis[0].vaccine_result}}</td>
+            <td>{{query_cow.tuberculosis[0].vaccine_date}}</td>
+            <td>{{query_cow.tuberculosis[0].vaccine_result}}</td>
           </tr>
         </table>
       </div>	  
