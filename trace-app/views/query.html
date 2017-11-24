@@ -73,6 +73,31 @@
     </header>
 
     <div id="body">
+      <div class="outer-div">
+        <div class="form-group">
+          <label>모든 소고기 정보</label>
+          <p><input id="queryAllCow" type="submit" value="Query" class="btn btn-primary" ng-click="queryAllCow()"></p>
+        </div>
+
+        <table id="all_cow" class="table" align="center">
+          <tr>
+            <th>이력번호</th>
+            <th>농장식별번호</th>
+            <th>개체식별번호</th>
+            <th>출생년월일</th>
+            <th>소의 종류</th>
+          </tr>
+
+          <tr ng-repeat="cow in all_cow">
+            <td>{{cow.Key}}</td>
+            <td>{{cow.farm_id}}</td>
+            <td>{{cow.cow_id}}</td>
+            <td>{{cow.cow_birthday}}</td>
+            <td>{{cow.cow_category}}</td>
+          </tr>
+        </table>
+      </div>  
+    
       <div class="outer-div">  
         <div class="form-group">
           <label>이력 번호로 조회</label><br>
@@ -117,7 +142,7 @@
             <td>{{query_cow.register_info[0].owner_address}}</td>
           </tr>
         </table>
-	    
+      
         <table id="query_cow" class="table" align="center">
           <tr>
             <th colspan="6">도축 처리 정보</th>
@@ -139,7 +164,7 @@
             <td>{{query_cow.slaughter_info.slaughter_company}}</td>
           </tr>
         </table>
-		
+    
         <table id="query_cow" class="table" align="center">
           <tr>
             <th colspan="5">포장 처리 정보</th>
@@ -159,7 +184,7 @@
             <td>{{package_info.package_date}}</td>
           </tr>
         </table>
-	    
+      
         <table id="query_cow" class="table" align="center">
           <tr>
             <th colspan="6">구제역 백신접종 및 가축질병 검사 정보</th>
@@ -172,11 +197,11 @@
             <th>결핵 검사결과</th>
           </tr>
           <tr>
-            <td>{{query_cow.foot_and_mouth}}</td>
-            <td>{{query_cow.brucelliasis}}</td>
-            <td>{{query_cow.brucelliasis}}</td>
-            <td>{{query_cow.tuberculosis}}</td>
-            <td>{{query_cow.tuberculosis}}</td>
+            <td>{{query_cow.foot_and_mouth[0].vaccine_date}}</td>
+            <td>{{query_cow.brucelliasis[0].vaccine_date}}</td>
+            <td>{{query_cow.brucelliasis[0].vaccine_result}}</td>
+            <td>{{query_cow.tuberculosis[0].vaccine_date}}</td>
+            <td>{{query_cow.tuberculosis[0].vaccine_result}}</td>
           </tr>
         </table>
       </div>
