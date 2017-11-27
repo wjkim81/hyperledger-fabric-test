@@ -1,13 +1,14 @@
-!/bin/bash
+#!/bin/bash
 #
 # SPDX-License-Identifier: Apache-2.0
 # This code is based on code written by the Hyperledger Fabric community. 
 # Original code can be found here: https://github.com/hyperledger/fabric-samples/blob/release/fabcar/startFabric.sh
 #
 # Exit on first error
-if [ $# -eq 1 ]
+if [ $# -ne 1 ]
   then
     echo "No arguments supplied for version"
+  exit 1
 fi
 
 set -e

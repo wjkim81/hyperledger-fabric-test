@@ -1,6 +1,8 @@
 chaincode/trace-app/trace
 trace-app/node_modules
+trace-app/docker-compose.yml
 trace-app/bin
+basic-network/bin/
 gitadd.sh
 gitcommit.sh
 gitpush.sh

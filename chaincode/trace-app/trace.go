@@ -142,6 +142,8 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
         return s.updateSlaughterInfoCow(APIstub, args)
     } else if function == "updatePackageInfoCow" {
         return s.updatePackageInfoCow(APIstub, args)
+    } else if function == "insertObjects" {
+        return s.insertObjects(APIstub)
     }
 
     return shim.Error("Invalid Smart Contract function name.")
@@ -289,6 +291,99 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface) sc.Respo
         fmt.Println("Added", cows[i])
         i = i + 1
     }
+
+    return shim.Success(nil)
+}
+
+
+func (s *SmartContract) insertObjects(APIstub shim.ChaincodeStubInterface) sc.Response {
+
+    
+    var cow          Cow
+    var trace_id     int
+    var trace_id_str string
+    var cow_id_str   string
+    var num_insert   int
+
+    fmt.Println("Inserting object")
+
+    cow = Cow{
+        Trace_id:     "102021860000",
+        Farm_id:      "020218",
+        Cow_id:       "00000",
+        Cow_birthday: "20070115",
+        Cow_category: "한우",
+        Cow_sex:      "거세",
+        Register_info: []Register_info{
+            Register_info{     
+                Owner:         "홍길동",
+                Category:      "전산등록", 
+                Date:          "20080111", 
+                Owner_address: "경기도 양주시 만송통",
+            },
+            Register_info{     
+                Owner:         "김철수",
+                Category:      "양수",
+                Date:          "20090611", 
+                Owner_address: "경기도 양주시 만송통",
+            },
+            Register_info{     
+                Owner:         "김철수",
+                Category:      "도축출하", 
+                Date:          "20090611", 
+                Owner_address: "경기도 양주시 만송통",
+            },
+        },
+        Slaughter_info: Slaughter_info{
+            Slaughter_house: "우림축산 (경기도 동두천시 동두천동)",
+            Slaughter_date:  "20090611",
+            Cow_result:      "합격",
+            Cow_weight:      409,
+            Cow_grade:       "1+",
+            Slaughter_company: "양주축협가공공장 (경기도 양주시 고읍동)",
+        },
+        Foot_and_mouth: []Foot_and_mouth{
+            Foot_and_mouth{
+                Vaccine_date:   "20080211",
+                Vaccine_result: "이상무",
+            },
+        },
+        Brucelliasis: []Brucelliasis{
+            Brucelliasis{
+                Vaccine_date:   "20080420",
+                Vaccine_result: "합격",
+            },
+        },
+        Tuberculosis: []Tuberculosis{
+            Tuberculosis{
+                Vaccine_date:   "20080631",
+                Vaccine_result: "합격",
+            },
+        },
+    }
+
+    
+    i := 0
+    num_insert = 1000
+    trace_id = 102021860000
+    for i < num_insert {
+        fmt.Println("i is ", i)
+        trace_id = trace_id + 1
+        trace_id_str = strconv.Itoa(trace_id)
+        cow_id_str = strconv.Itoa(100000 + i)
+
+        cow.Trace_id = trace_id_str
+        cow.Cow_id = cow_id_str
+        cow.Cow_category = "돼지" + trace_id_str
+
+        cowAsBytes, _ := json.Marshal(cow)
+        //APIstub.PutState(strconv.Itoa(i+1), cowAsBytes)
+        APIstub.PutState(cow.Trace_id, cowAsBytes)
+        fmt.Println("Added", cow)
+        i = i + 1
+    }
+
+    fmt.Println("Inserting object")
 
     return shim.Success(nil)
 }
