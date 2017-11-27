@@ -14,13 +14,13 @@ formatting, and string manipulation
 * 2 specific Hyperledger Fabric specific libraries for Smart Contracts
 */
 import (
-    "bytes"
-    "encoding/json"
-    "fmt"
-    "strconv"
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"strconv"
 
-    "github.com/hyperledger/fabric/core/chaincode/shim"
-    sc "github.com/hyperledger/fabric/protos/peer"
+	"github.com/hyperledger/fabric/core/chaincode/shim"
+	sc "github.com/hyperledger/fabric/protos/peer"
 )
 
 // Define the Smart Contract structure
@@ -117,7 +117,7 @@ infoType: 조회 정보 옵션값
     4: 포장(소/돼지)
     5: 구제역백신(소)
     6: 질병정보(소)
-    7: 브루셀라(소) 
+    7: 브루셀라(소)
     8: 묶음 기본정보(묶음)
     9: 묶음구성내역(묶음)
 
@@ -217,76 +217,78 @@ infoType = 9
     CorpNo               사업자번호   10  1   1992484871                    사업자번호
     FarmAddr             농장 소재지  200 1   경상북도 포항시 북구 청하면 비학로 농장 소재지
     FarmerNm             사육자명    100 1   강충열                           사육자명
-    PigNo                이력(묶음)번호    20  1   170003000058              이력(묶음)번호 
+    PigNo                이력(묶음)번호    20  1   170003000058              이력(묶음)번호
     ButcheryPlaceAddr    도축장 주소  200 1   경상북도 영천시 도남동 695번지      도축장 주소
     ButcheryPlaceNm      도축장명    100 1   (주)삼세                       도축장명
     ButcheryYmd          도축일자    8   1   20150730                     도축일자
 */
 
 type FarmInfo struct { // 농장 정보 및 등록정보
-    FarmNo         string          `json:"farmNo"`            // 농장식별번호
-    FarmNm         string          `json:"farmNm"`            // 농장명
-    FarmAddr       string          `json:"farmAddr"`          // 농장주소
-    FarmerNm       string          `json:"farmerNm"`          // 소유주
-    RegType        string          `json:"regType"`           // 신고구분
-    RegYmd         string          `json:"regYmd"`            // 년월일
+	FarmNo   string `json:"farmNo"`   // 농장식별번호
+	FarmNm   string `json:"farmNm"`   // 농장명
+	FarmAddr string `json:"farmAddr"` // 농장주소
+	FarmerNm string `json:"farmerNm"` // 소유주
+	RegType  string `json:"regType"`  // 신고구분
+	RegYmd   string `json:"regYmd"`   // 년월일
 }
 
 type ButcheryInfo struct {
-    ButcheryPlaceAddr  string      `json:"butcheryPlaceAddr"` // 도축장 주소
-    ButcheryPlaceNm    string      `json:"butcheryPlaceNm"`   // 도축장명
-    ButcheryYmd        string      `json:"butcheryYmd"`       // 도축일자
-    GradeNm            string      `json:"gradeNm"`           // 등급명 (육질등급)
-    InspectPassYn      string      `json:"inspectPassYn"`     // 위생검사 결과 (합격/불합격/보류)
-    ButcheryWeight     int         `json:"butcheryWeight"`    // 도체중
-    AbattCode          string      `json:"AbattCode"`         // 도축장코드
-    ProcessPlaceNm     string      `json:"processPlaceNm"`    // 가공장/도축처리업소
+	ButcheryPlaceAddr string `json:"butcheryPlaceAddr"` // 도축장 주소
+	ButcheryPlaceNm   string `json:"butcheryPlaceNm"`   // 도축장명
+	ButcheryYmd       string `json:"butcheryYmd"`       // 도축일자
+	GradeNm           string `json:"gradeNm"`           // 등급명 (육질등급)
+	InspectPassYn     string `json:"inspectPassYn"`     // 위생검사 결과 (합격/불합격/보류)
+	ButcheryWeight    int    `json:"butcheryWeight"`    // 도체중
+	AbattCode         string `json:"AbattCode"`         // 도축장코드
+	ProcessPlaceNm    string `json:"processPlaceNm"`    // 가공장/도축처리업소
 }
 
 type FootAndMouth struct { // *구제역
-    InjectionYmd    string         `json:"injectionYmd"`      // 구제역 예방접종일자
-    InjectionResult string         `json:"injectionResult"`   // 구제역 검사결과
+	InjectionYmd    string `json:"injectionYmd"`    // 구제역 예방접종일자
+	InjectionResult string `json:"injectionResult"` // 구제역 검사결과
 }
 
 type Brucelliasis struct { // *브루셀라
-    InjectionYmd    string         `json:"injectionYmd"`      // 브루셀라 검사(최종)일자
-    InjectionResult string         `json:"injectionResult"`   // 브루셀라 검사결과
+	InjectionYmd    string `json:"injectionYmd"`    // 브루셀라 검사(최종)일자
+	InjectionResult string `json:"injectionResult"` // 브루셀라 검사결과
 }
 
 type Tuberculosis struct { // *결핵
-    InjectionYmd    string         `json:"injectionYmd"`      // 결핵 검사(최종)일자
-    InjectionResult string         `json:"injectionResult"`   // 결핵 검사결과
+	InjectionYmd    string `json:"injectionYmd"`    // 결핵 검사(최종)일자
+	InjectionResult string `json:"injectionResult"` // 결핵 검사결과
 }
 
-type ProcessInfo {
-    CorpNo             string       `json:"corpNo"`           // 사업자번호
-    LotNo              string       `json:"lotNo"`            // 묶음번호
-    ProcessPlaceAddr   string       `json:"processPlaceAddr"` // 포장처리업소 주소
-    ProcessPlaceNm     string       `json:"ProcessPlaceNm"`   // 포장처리업소명
+type ProcessInfo struct {
+	CorpNo           string `json:"corpNo"`           // 사업자번호
+	LotNo            string `json:"lotNo"`            // 묶음번호
+	ProcessPlaceNm   string `json:"processPlaceNm"`   // 포장처리업소명
+	ProcessPlaceAddr string `json:"processPlaceAddr"` // 포장처리업소 주소
+	ProcessYmd       string `json:"processYmd"`       // 포장일자
+	ProcessWeight    int    `json:"processWeight"`    // 포장단위(g)
+	ProcessPart      string `json:"processPart"`      // 포장 부위
 }
 
 type Cattle struct {
-    TraceId        string          `json:"traceId"`           // 이력번호
-    CattleNo       string          `json:"cattleNo"`          // 개체식별번호 = 이력번호
-    BirthYmd       string          `json:"birthYmd"`          // 출생년월일
-    FlatEartagNo   string          `json:"flatEartagNo"`      // 재부착번호
-    LsTypeCd       string          `json:"lsTypeCd"`          // 소의종류코드
-    LsTypeNm       string          `json:"lsTypeNm"`          // 소의종류
-    MonthDiff      int             `json:"monthDiff"`         // 수입경과월
-    nationNm       string          `json:"nationNm"`          // 수입국가
-    SexCd          string          `json:"sexCd"`             // 성별코드
-    SexNm          string          `json:"sexNm"`             // 성별
+	TraceId      string `json:"traceId"`      // 이력번호
+	CattleNo     string `json:"cattleNo"`     // 개체식별번호 = 이력번호
+	BirthYmd     string `json:"birthYmd"`     // 출생년월일
+	FlatEartagNo string `json:"flatEartagNo"` // 재부착번호
+	LsTypeCd     string `json:"lsTypeCd"`     // 소의종류코드
+	LsTypeNm     string `json:"lsTypeNm"`     // 소의종류
+	MonthDiff    int    `json:"monthDiff"`    // 수입경과월
+	nationNm     string `json:"nationNm"`     // 수입국가
+	SexCd        string `json:"sexCd"`        // 성별코드
+	SexNm        string `json:"sexNm"`        // 성별
 
-    FarmInfo       []FarmInfo      `json:"farmInfo"`          // 농장 및 등록정보[]
-    ButcheryInfo   ButcheryInfo    `json:"butcheryInfo"`      // 도축정보 
+	FarmInfo     []FarmInfo   `json:"farmInfo"`     // 농장 및 등록정보[]
+	ButcheryInfo ButcheryInfo `json:"butcheryInfo"` // 도축정보
 
-    FootAndMouth   []FootAndMouth  `json:"foot_and_mouth"`    // 구제역[]
-    Brucelliasis   []Brucelliasis  `json:"brucelliasis"`      // 브루셀라[]
-    Tuberculosis   []Tuberculosis  `json:"tuberculosis"`      // 결핵[]
+	FootAndMouth []FootAndMouth `json:"footAndMouth"` // 구제역[]
+	Brucelliasis []Brucelliasis `json:"brucelliasis"` // 브루셀라[]
+	Tuberculosis []Tuberculosis `json:"tuberculosis"` // 결핵[]
 
-    ProcessInfo    []ProcessInfo   `json:"processInfo"`       // 포장정보[]
+	ProcessInfo []ProcessInfo `json:"processInfo"` // 포장정보[]
 }
-
 
 /*
  * The Init method *
@@ -295,7 +297,7 @@ type Cattle struct {
  -- see initLedger()
 */
 func (s *SmartContract) Init(APIstub shim.ChaincodeStubInterface) sc.Response {
-    return shim.Success(nil)
+	return shim.Success(nil)
 }
 
 /*
@@ -305,31 +307,27 @@ func (s *SmartContract) Init(APIstub shim.ChaincodeStubInterface) sc.Response {
 */
 func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response {
 
-    // Retrieve the requested Smart Contract function and arguments
-    function, args := APIstub.GetFunctionAndParameters()
-    // Route to the appropriate handler function to interact with the ledger
+	// Retrieve the requested Smart Contract function and arguments
+	function, args := APIstub.GetFunctionAndParameters()
+	// Route to the appropriate handler function to interact with the ledger
 
-    if function == "qucattleeryCattle" {
-        return s.query(APIstub, args)
-    } else if function == "initLedger" {
-        return s.initLedger(APIstub)
-    } else if function == "recordCattle" {
-        return s.recordCattle(APIstub, args)
-    } else if function == "queryAllCattle" {
-        return s.queryAllCattle(APIstub)
-    } else if function == "changeCattleHolder" {
-        return s.changeCattleHolder(APIstub, args)
-    } else if function == "registerCattle" {
-        return s.registerCattle(APIstub, args)
-    } else if function == "updateSlaughterInfoCattle" {
-        return s.updateSlaughterInfoCattle(APIstub, args)
-    } else if function == "updatePackageInfoCattle" {
-        return s.updatePackageInfoCattle(APIstub, args)
-    } else if function == "insertObjects" {
-        return s.insertObjects(APIstub)
-    }
+	if function == "queryCattle" {
+		return s.queryCattle(APIstub, args)
+	} else if function == "initLedger" {
+		return s.initLedger(APIstub)
+	} else if function == "queryAllCattle" {
+		return s.queryAllCattle(APIstub)
+	} else if function == "registerCattle" {
+		return s.registerCattle(APIstub, args)
+	} else if function == "updateButcheryInfo" {
+		return s.updateButcheryInfo(APIstub, args)
+	} else if function == "updateProcessInfo" {
+		return s.updateProcessInfo(APIstub, args)
+	} else if function == "insertObjects" {
+		return s.insertObjects(APIstub)
+	}
 
-    return shim.Error("Invalid Smart Contract function name.")
+	return shim.Error("Invalid Smart Contract function name.")
 }
 
 /*
@@ -339,14 +337,14 @@ It takes one argument -- the key for the cattle in question
 */
 func (s *SmartContract) queryCattle(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
-    if len(args) != 1 {
-        return shim.Error("Incorrect number of arguments. Expecting 1")
-    }
-    cattleAsBytes, _ := APIstub.GetState(args[0])
-    if cattleAsBytes == nil {
-        return shim.Error("Could not locate cattle")
-    }
-    return shim.Success(cattleAsBytes)
+	if len(args) != 1 {
+		return shim.Error("Incorrect number of arguments. Expecting 1")
+	}
+	cattleAsBytes, _ := APIstub.GetState(args[0])
+	if cattleAsBytes == nil {
+		return shim.Error("Could not locate cattle")
+	}
+	return shim.Success(cattleAsBytes)
 }
 
 /*
@@ -354,263 +352,274 @@ func (s *SmartContract) queryCattle(APIstub shim.ChaincodeStubInterface, args []
 Will add test data to our network
 */
 func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface) sc.Response {
-    cattles := []Cattle{
-        Cattle{
+	cattles := []Cattle{
+		Cattle{
+			TraceId:  "002021864077",
+			CattleNo: "002021864077",
+			BirthYmd: "20070115",
+			//FlatEartagNo:    "",
+			//LsTypeCd:        "",
+			LsTypeNm: "한우",
+			//SexCd:           "",
+			SexNm: "거세",
 
-type FootAndMouth struct { // *구제역
-    InjectionYmd    string         `json:"injectionYmd"`      // 구제역 예방접종일자
-    InjectionResult string         `json:"injectionResult"`   // 구제역 검사결과
-}
+			FarmInfo: []FarmInfo{
+				FarmInfo{
+					FarmNo:   "020218",
+					FarmNm:   "",
+					FarmerNm: "김영한",
+					FarmAddr: "경기도 양주시 만송통",
+					RegType:  "전산등록",
+					RegYmd:   "20080111",
+				},
+				FarmInfo{
+					FarmNo:   "020219",
+					FarmNm:   "",
+					FarmerNm: "양영귀",
+					FarmAddr: "경기도 양주시 만송통",
+					RegType:  "양수",
+					RegYmd:   "20090611",
+				},
+				FarmInfo{
+					FarmNo:   "020219",
+					FarmNm:   "",
+					FarmerNm: "양영귀",
+					FarmAddr: "경기도 양주시 만송통",
+					RegType:  "도축출하",
+					RegYmd:   "20090611",
+				},
+			},
 
-type Brucelliasis struct { // *브루셀라
-    InjectionYmd    string         `json:"injectionYmd"`      // 브루셀라 검사(최종)일자
-    InjectionResult string         `json:"injectionResult"`   // 브루셀라 검사결과
-}
+			ButcheryInfo: ButcheryInfo{
+				ButcheryPlaceAddr: "경기도 동두천시 동두천동",
+				ButcheryPlaceNm:   "우림축산",
+				ButcheryYmd:       "20090611",
+				GradeNm:           "1+",
+				InspectPassYn:     "합격",
+				ButcheryWeight:    409,
+				//AbattCode:    "",
+				ProcessPlaceNm: "양주축협가공공장 (경기도 양주시 고읍동)",
+			},
+			FootAndMouth: []FootAndMouth{
+				FootAndMouth{
+					InjectionYmd:    "20080211",
+					InjectionResult: "이상무",
+				},
+			},
+			Brucelliasis: []Brucelliasis{
+				Brucelliasis{
+					InjectionYmd:    "20080420",
+					InjectionResult: "합격",
+				},
+			},
+			Tuberculosis: []Tuberculosis{
+				Tuberculosis{
+					InjectionYmd:    "20080631",
+					InjectionResult: "합격",
+				},
+			},
+			ProcessInfo: []ProcessInfo{
+				ProcessInfo{
+					CorpNo:           "1178522046",
+					LotNo:            "L01709271277007",
+					ProcessPlaceAddr: "경기도 광주시 곤지암읍 경충대로",
+					ProcessPlaceNm:   "우성 육가공",
+					ProcessYmd:       "20190304",
+					ProcessWeight:    1000,
+					ProcessPart:      "안심",
+				},
+				ProcessInfo{
+					CorpNo:           "1178522046",
+					LotNo:            "L01709271277007",
+					ProcessPlaceAddr: "경기도 광주시 곤지암읍 경충대로",
+					ProcessPlaceNm:   "우성 육가공",
+					ProcessYmd:       "20190304",
+					ProcessWeight:    2000,
+					ProcessPart:      "등심",
+				},
+			},
+		},
+		/*
+		   Cow{
+		       TraceId:           "002021864078",
+		       Farm_id:      "020218",
+		       Cow_id:       "64077",
+		       Cow_birthday: "20070115",
+		       Cow_category: "한우",
+		       Cow_sex:      "거세",
+		       Register_info: []Register_info{
+		           Register_info{
+		               Owner:         "김영한",
+		               Category:      "전산등록",
+		               Date:          "20080111",
+		               Owner_address: "경기도 양주시 만송통",
+		           },
+		           Register_info{
+		               Owner:         "양영귀",
+		               Category:      "양수",
+		               Date:          "20090611",
+		               Owner_address: "경기도 양주시 만송통",
+		           },
+		           Register_info{
+		               Owner:         "양영귀",
+		               Category:      "도축출하",
+		               Date:          "20090611",
+		               Owner_address: "경기도 양주시 만송통",
+		           },
+		       },
+		       Slaughter_info: Slaughter_info{
+		           Slaughter_house: "우림축산 (경기도 동두천시 동두천동)",
+		           Slaughter_date:  "20090611",
+		           Cow_result:      "합격",
+		           Cow_weight:      409,
+		           Cow_grade:       "1+",
+		           Slaughter_company: "양주축협가공공장 (경기도 양주시 고읍동)",
+		       },
+		       Foot_and_mouth: []Foot_and_mouth{
+		           Foot_and_mouth{
+		               Vaccine_date:   "20080211",
+		               Vaccine_result: "이상무",
+		           },
+		       },
+		       Brucelliasis: []Brucelliasis{
+		           Brucelliasis{
+		               Vaccine_date:   "20080420",
+		               Vaccine_result: "합격",
+		           },
+		       },
+		       Tuberculosis: []Tuberculosis{
+		           Tuberculosis{
+		               Vaccine_date:   "20080631",
+		               Vaccine_result: "합격",
+		           },
+		       },
+		   },
+		*/
+	}
 
-type Tuberculosis struct { // *결핵
-    InjectionYmd    string         `json:"injectionYmd"`      // 결핵 검사(최종)일자
-    InjectionResult string         `json:"injectionResult"`   // 결핵 검사결과
-}
+	i := 0
+	for i < len(cattles) {
+		fmt.Println("i is ", i)
+		cattleAsBytes, _ := json.Marshal(cattles[i])
+		//APIstub.PutState(strconv.Itoa(i+1), cowAsBytes)
+		APIstub.PutState(cattles[i].TraceId, cattleAsBytes)
+		fmt.Println("Added", cattles[i])
+		i = i + 1
+	}
 
-type ProcessInfo {
-    CorpNo             string       `json:"corpNo"`           // 사업자번호
-    LotNo              string       `json:"lotNo"`            // 묶음번호
-    ProcessPlaceAddr   string       `json:"processPlaceAddr"` // 포장처리업소 주소
-    ProcessPlaceNm     string       `json:"ProcessPlaceNm"`   // 포장처리업소명
-}
-
-type Cattle struct {
-
-    FarmInfo       []FarmInfo      `json:"farmInfo"`          // 농장 및 등록정보[]
-    ButcheryInfo   ButcheryInfo    `json:"butcheryInfo"`      // 도축정보 
-
-    FootAndMouth   []FootAndMouth  `json:"foot_and_mouth"`    // 구제역[]
-    Brucelliasis   []Brucelliasis  `json:"brucelliasis"`      // 브루셀라[]
-    Tuberculosis   []Tuberculosis  `json:"tuberculosis"`      // 결핵[]
-
-    ProcessInfo    []ProcessInfo   `json:"processInfo"`       // 포장정보[]
-}
-
-            TraceId:           "002021864077",
-            //Farm_id:         "020218",
-            CattleNo:          "002021864077",
-            BirthYmd:          "20070115",
-            //FlatEartagNo:    "",
-            //LsTypeCd:        "",
-            LsTypeNm:          "한우",
-            //SexCd:           "",
-            SexNm:             "거세",
-
-            FarmInfo: []FarmInfo{
-                FarmInfo{
-                    FarmerNm:  "김영한",
-                    RegType:   "전산등록",
-                    RegYmd:    "20080111",
-                    FarmAddr:  "경기도 양주시 만송통",
-                },
-                FarmInfo{
-                    FarmerNm:  "양영귀",
-                    RegType:   "양수",
-                    RegYmd:    "20090611",
-                    FarmAddr: "경기도 양주시 만송통",
-                },
-                FarmInfo{
-                    FarmerNm:         "양영귀",
-                    RegType:      "도축출하",
-                    RegYmd:          "20090611",
-                    FarmAddr: "경기도 양주시 만송통",
-                },
-            },
-
-            ButcheryInfo: ButcheryInfo{
-                ButcheryPlaceAddr: "경기도 동두천시 동두천동"
-                ButcheryPlaceNm: "우림축산",
-                ButcheryYmd:  "20090611",
-                GradeNm:       "1+",
-                InspectPassYn:      "합격",
-                ButcheryWeight:      409,
-                //AbattCode:    "",
-                ProcessPlaceNm: "양주축협가공공장 (경기도 양주시 고읍동)",
-            },
-            FootAndMouth: []FootAndMouth{
-                FootAndMouth{
-                    InjectionYmd:   "20080211",
-                    InjectionResult: "이상무",
-                },
-            },
-            Brucelliasis: []Brucelliasis{
-                Brucelliasis{
-                    InjectionYmd:   "20080420",
-                    InjectionResult: "합격",
-                },
-            },
-            Tuberculosis: []Tuberculosis{
-                Tuberculosis{
-                    InjectionYmd:   "20080631",
-                    InjectionResult: "합격",
-                },
-            },
-            ProcessInfo: ProcessInfo{
-                CorpNo:             "1178522046"
-                LotNo:              "L01709271277007"
-                ProcessPlaceAddr:   "경기도 광주시 곤지암읍 경충대로"
-                ProcessPlaceNm      "우성 육가공"
-            }
-        },
-        /*
-        Cow{
-            TraceId:           "002021864078",
-            Farm_id:      "020218",
-            Cow_id:       "64077",
-            Cow_birthday: "20070115",
-            Cow_category: "한우",
-            Cow_sex:      "거세",
-            Register_info: []Register_info{
-                Register_info{
-                    Owner:         "김영한",
-                    Category:      "전산등록",
-                    Date:          "20080111",
-                    Owner_address: "경기도 양주시 만송통",
-                },
-                Register_info{
-                    Owner:         "양영귀",
-                    Category:      "양수",
-                    Date:          "20090611",
-                    Owner_address: "경기도 양주시 만송통",
-                },
-                Register_info{
-                    Owner:         "양영귀",
-                    Category:      "도축출하",
-                    Date:          "20090611",
-                    Owner_address: "경기도 양주시 만송통",
-                },
-            },
-            Slaughter_info: Slaughter_info{
-                Slaughter_house: "우림축산 (경기도 동두천시 동두천동)",
-                Slaughter_date:  "20090611",
-                Cow_result:      "합격",
-                Cow_weight:      409,
-                Cow_grade:       "1+",
-                Slaughter_company: "양주축협가공공장 (경기도 양주시 고읍동)",
-            },
-            Foot_and_mouth: []Foot_and_mouth{
-                Foot_and_mouth{
-                    Vaccine_date:   "20080211",
-                    Vaccine_result: "이상무",
-                },
-            },
-            Brucelliasis: []Brucelliasis{
-                Brucelliasis{
-                    Vaccine_date:   "20080420",
-                    Vaccine_result: "합격",
-                },
-            },
-            Tuberculosis: []Tuberculosis{
-                Tuberculosis{
-                    Vaccine_date:   "20080631",
-                    Vaccine_result: "합격",
-                },
-            },
-        },
-        */
-    }
-
-    i := 0
-    for i < len(cattles) {
-        fmt.Println("i is ", i)
-        cattleAsBytes, _ := json.Marshal(cattles[i])
-        //APIstub.PutState(strconv.Itoa(i+1), cowAsBytes)
-        APIstub.PutState(cows[i].Trace_id, cattleAsBytes)
-        fmt.Println("Added", cattles[i])
-        i = i + 1
-    }
-
-    return shim.Success(nil)
+	return shim.Success(nil)
 }
 
 /*
  * The initLedger method *
-Will add test data (10 cow catches)to our network
+Will add test data (10 cattle catches)to our network
 */
 func (s *SmartContract) insertObjects(APIstub shim.ChaincodeStubInterface) sc.Response {
-    
-    var cow          Cow
-    var trace_id     int
-    var trace_id_str string
-    var num_insert   int
 
-    cows := Cow{
-        Trace_id:     "102021860000",
-        Farm_id:      "020218",
-        Cow_id:       "00000",
-        Cow_birthday: "20070115",
-        Cow_category: "한우",
-        Cow_sex:      "거세",
-        Register_info: []Register_info{
-            Register_info{
-                Owner:         "김영한",
-                Category:      "전산등록",
-                Date:          "20080111",
-                Owner_address: "경기도 양주시 만송통",
-            },
-            Register_info{
-                Owner:         "양영귀",
-                Category:      "양수",
-                Date:          "20090611",
-                Owner_address: "경기도 양주시 만송통",
-            },
-            Register_info{
-                Owner:         "양영귀",
-                Category:      "도축출하",
-                Date:          "20090611",
-                Owner_address: "경기도 양주시 만송통",
-            },
-        },
-        Slaughter_info: Slaughter_info{
-            Slaughter_house: "우림축산 (경기도 동두천시 동두천동)",
-            Slaughter_date:  "20090611",
-            Cow_result:      "합격",
-            Cow_weight:      409,
-            Cow_grade:       "1+",
-            Slaughter_company: "양주축협가공공장 (경기도 양주시 고읍동)",
-        },
-        Foot_and_mouth: []Foot_and_mouth{
-            Foot_and_mouth{
-                Vaccine_date:   "20080211",
-                Vaccine_result: "이상무",
-            },
-        },
-        Brucelliasis: []Brucelliasis{
-            Brucelliasis{
-                Vaccine_date:   "20080420",
-                Vaccine_result: "합격",
-            },
-        },
-        Tuberculosis: []Tuberculosis{
-            Tuberculosis{
-                Vaccine_date:   "20080631",
-                Vaccine_result: "합격",
-            },
-        },
-    }
+	var cattle Cattle
+	var traceId int
+	var traceIdStr string
+	var cattleNoStr string
 
-    i := 0
-    num_insert := 1000
-    for i < num_insert {
-        fmt.Println("i is ", i)
-        trace_id = strconv.atoi(cow.Trace_id) + 1
-        cow.Trace_id = trace_id
+	cattle = Cattle{
+		TraceId:  "002021864077",
+		CattleNo: "002021864077",
+		BirthYmd: "20070115",
+		//FlatEartagNo:    "",
+		//LsTypeCd:        "",
+		LsTypeNm: "한우",
+		//SexCd:           "",
+		SexNm: "거세",
 
-        cowAsBytes, _ := json.Marshal(cows[i])
-        //APIstub.PutState(strconv.Itoa(i+1), cowAsBytes)
-        APIstub.PutState(cows[i].Trace_id, cowAsBytes)
-        fmt.Println("Added", cows[i])
-        i = i + 1
-    }
+		FarmInfo: []FarmInfo{
+			FarmInfo{
+				FarmNo:   "020218",
+				FarmNm:   "",
+				FarmerNm: "김영한",
+				FarmAddr: "경기도 양주시 만송통",
+				RegType:  "전산등록",
+				RegYmd:   "20080111",
+			},
+			FarmInfo{
+				FarmNo:   "020219",
+				FarmNm:   "",
+				FarmerNm: "양영귀",
+				FarmAddr: "경기도 양주시 만송통",
+				RegType:  "양수",
+				RegYmd:   "20090611",
+			},
+			FarmInfo{
+				FarmNo:   "020219",
+				FarmNm:   "",
+				FarmerNm: "양영귀",
+				FarmAddr: "경기도 양주시 만송통",
+				RegType:  "도축출하",
+				RegYmd:   "20090611",
+			},
+		},
 
-    fmt.Println("Inserting object")
+		ButcheryInfo: ButcheryInfo{
+			ButcheryPlaceAddr: "경기도 동두천시 동두천동",
+			ButcheryPlaceNm:   "우림축산",
+			ButcheryYmd:       "20090611",
+			GradeNm:           "1+",
+			InspectPassYn:     "합격",
+			ButcheryWeight:    409,
+			//AbattCode:    "",
+			ProcessPlaceNm: "양주축협가공공장 (경기도 양주시 고읍동)",
+		},
+		FootAndMouth: []FootAndMouth{
+			FootAndMouth{
+				InjectionYmd:    "20080211",
+				InjectionResult: "이상무",
+			},
+		},
+		Brucelliasis: []Brucelliasis{
+			Brucelliasis{
+				InjectionYmd:    "20080420",
+				InjectionResult: "합격",
+			},
+		},
+		Tuberculosis: []Tuberculosis{
+			Tuberculosis{
+				InjectionYmd:    "20080631",
+				InjectionResult: "합격",
+			},
+		},
+		ProcessInfo: []ProcessInfo{
+			ProcessInfo{
+				CorpNo:           "1178522046",
+				LotNo:            "L01709271277007",
+				ProcessPlaceAddr: "경기도 광주시 곤지암읍 경충대로",
+				ProcessPlaceNm:   "우성 육가공",
+				ProcessYmd:       "20190304",
+				ProcessWeight:    2000,
+				ProcessPart:      "삼겹살",
+			},
+		},
+	}
 
-    return shim.Success(nil)
+	traceId = 102021860000
+	numInsert := 1000
+	for i := 0; i < numInsert; i++ {
+		fmt.Println("i is ", i)
+		traceId = traceId + i
+		traceIdStr = strconv.Itoa(traceId)
+		cattleNoStr = strconv.Itoa(100000 + i)
+
+		cattle.TraceId = traceIdStr
+		cattle.CattleNo = cattleNoStr
+		cattle.LsTypeNm = "돼지 " + strconv.Itoa(i)
+
+		cattleAsBytes, _ := json.Marshal(cattle)
+		//APIstub.PutState(strconv.Itoa(i+1), cowAsBytes)
+		APIstub.PutState(cattle.TraceId, cattleAsBytes)
+		fmt.Println("Added", cattle)
+	}
+
+	fmt.Println("Inserting object")
+
+	return shim.Success(nil)
 }
 
 /*
@@ -620,164 +629,162 @@ This method does not take any arguments. Returns JSON string containing results.
 */
 func (s *SmartContract) queryAllCattle(APIstub shim.ChaincodeStubInterface) sc.Response {
 
-    startKey := "000000000000"
-    endKey := "999999999999"
+	startKey := "000000000000"
+	endKey := "999999999999"
 
-    resultsIterator, err := APIstub.GetStateByRange(startKey, endKey)
-    if err != nil {
-        return shim.Error(err.Error())
-    }
-    defer resultsIterator.Close()
+	resultsIterator, err := APIstub.GetStateByRange(startKey, endKey)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	defer resultsIterator.Close()
 
-    // buffer is a JSON array containing QueryResults
-    var buffer bytes.Buffer
-    buffer.WriteString("[")
+	// buffer is a JSON array containing QueryResults
+	var buffer bytes.Buffer
+	buffer.WriteString("[")
 
-    bArrayMemberAlreadyWritten := false
-    for resultsIterator.HasNext() {
-        queryResponse, err := resultsIterator.Next()
-        if err != nil {
-            return shim.Error(err.Error())
-        }
-        // Add comma before array members,suppress it for the first array member
-        if bArrayMemberAlreadyWritten == true {
-            buffer.WriteString(",")
-        }
-        buffer.WriteString("{\"Key\":")
-        buffer.WriteString("\"")
-        buffer.WriteString(queryResponse.Key)
-        buffer.WriteString("\"")
+	bArrayMemberAlreadyWritten := false
+	for resultsIterator.HasNext() {
+		queryResponse, err := resultsIterator.Next()
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+		// Add comma before array members,suppress it for the first array member
+		if bArrayMemberAlreadyWritten == true {
+			buffer.WriteString(",")
+		}
+		buffer.WriteString("{\"Key\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(queryResponse.Key)
+		buffer.WriteString("\"")
 
-        buffer.WriteString(", \"Record\":")
-        // Record is a JSON object, so we write as-is
-        buffer.WriteString(string(queryResponse.Value))
-        buffer.WriteString("}")
-        bArrayMemberAlreadyWritten = true
-    }
-    buffer.WriteString("]")
+		buffer.WriteString(", \"Record\":")
+		// Record is a JSON object, so we write as-is
+		buffer.WriteString(string(queryResponse.Value))
+		buffer.WriteString("}")
+		bArrayMemberAlreadyWritten = true
+	}
+	buffer.WriteString("]")
 
-    fmt.Printf("- queryAllCattle:\n%s\n", buffer.String())
+	fmt.Printf("- queryAllCattle:\n%s\n", buffer.String())
 
-    return shim.Success(buffer.Bytes())
+	return shim.Success(buffer.Bytes())
 }
 
 /*
  * The registerCattle method *
-*/
+ */
 func (s *SmartContract) registerCattle(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
-    if len(args) != 8 {
-        return shim.Error("Incorrect number of arguments. Expecting 5")
-    }
-    
-    if len(args[0]) != 12 {
-        return shim.Error("Inccorrect trace id. Expecting 12 digits")
-    }
+	if len(args) != 8 {
+		return shim.Error("Incorrect number of arguments. Expecting 5")
+	}
 
-    var register_info []Register_info
-    var farm_id string = args[0][1:7] 
-    var cow_id string = args[0][7:]
+	if len(args[0]) != 12 {
+		return shim.Error("Inccorrect trace id. Expecting 12 digits")
+	}
 
-    register_info = append(register_info, Register_info{ Owner: args[4], Category: args[5], Date: args[6], Owner_address: args[7] })
+	var farmInfo []FarmInfo
+	var farmNo string = args[0][1:7]
+	var cattleNo string = args[0][7:]
 
-    var cow = Cow{ Trace_id: args[0], Farm_id: farm_id, Cow_id: cow_id, Cow_birthday: args[1],
-        Cow_category: args[2], Cow_sex: args[3],
-        //Register_info: Register_info[0]{ Owner: args[6], Category: args[7], Date: args[8], Owner_address: args[9] }}
-        Register_info: register_info}
+	farmInfo = append(farmInfo, FarmInfo{FarmNo: farmNo, FarmerNm: args[4], RegType: args[5], RegYmd: args[6], FarmAddr: args[7]})
 
-    cowAsBytes, _ := json.Marshal(cow)
-    err := APIstub.PutState(args[0], cowAsBytes)
-    if err != nil {
-        return shim.Error(fmt.Sprintf("Failed to register: %s", args[0]))
-    }
+	var cattle = Cattle{TraceId: args[0], CattleNo: cattleNo, BirthYmd: args[1], LsTypeNm: args[2], SexNm: args[3],
+		FarmInfo: farmInfo}
 
-    return shim.Success(nil)
+	cattleAsBytes, _ := json.Marshal(cattle)
+	err := APIstub.PutState(args[0], cattleAsBytes)
+	if err != nil {
+		return shim.Error(fmt.Sprintf("Failed to register: %s", args[0]))
+	}
+
+	return shim.Success(nil)
 }
 
 /*
- * The updateSlaughterInfoCow method *
-*/
-func (s *SmartContract) updateSlaughterInfoCow(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+ * The updateButcheryInfo method *
+ */
+func (s *SmartContract) updateButcheryInfo(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
-    if len(args) != 7 {
-        return shim.Error("[updateSlaughterInfoCow] Incorrect number of arguments. Expecting 7")
-    }
+	if len(args) != 7 {
+		return shim.Error("[updateButcheryInfo] Incorrect number of arguments. Expecting 7")
+	}
 
-    if len(args[0]) != 12 {
-        return shim.Error("Inccorrect trace id. Expecting 12 digits")
-    }
+	if len(args[0]) != 12 {
+		return shim.Error("Inccorrect trace id. Expecting 12 digits")
+	}
 
-    weight, err := strconv.Atoi(args[4])
-    if err != nil {
-        // handle error
-        return shim.Error("Incorrect number for cow weight")
-    }
+	weight, err := strconv.Atoi(args[4])
+	if err != nil {
+		// handle error
+		return shim.Error("Incorrect number for cattle weight")
+	}
 
-    cowAsBytes, _ := APIstub.GetState(args[0])
-    if cowAsBytes == nil {
-        return shim.Error("Could not locate cow")
-    }
+	cattleAsBytes, _ := APIstub.GetState(args[0])
+	if cattleAsBytes == nil {
+		return shim.Error("Could not locate cattle")
+	}
 
-    var cow = Cow{}
+	var cattle = Cattle{}
 
-    json.Unmarshal(cowAsBytes, &cow)
+	json.Unmarshal(cattleAsBytes, &cattle)
 
-    var slaughter_info Slaughter_info
-    slaughter_info = Slaughter_info{ Slaughter_house: args[1], Slaughter_date: args[2], Cow_result: args[3],
-                                     Cow_weight: weight, Cow_grade: args[5], Slaughter_company: args[6] }
+	var butcheryInfo ButcheryInfo
+	butcheryInfo = ButcheryInfo{ButcheryPlaceNm: args[1], ButcheryYmd: args[2], InspectPassYn: args[3],
+		ButcheryWeight: weight, GradeNm: args[5], ProcessPlaceNm: args[6]}
 
-    cow.Slaughter_info = slaughter_info
+	cattle.ButcheryInfo = butcheryInfo
 
-    cowAsBytes, _ = json.Marshal(cow)
-    err = APIstub.PutState(args[0], cowAsBytes)
-    if err != nil {
-        return shim.Error(fmt.Sprintf("Failed to register slaughter information: %s", args[0]))
-    }
+	cattleAsBytes, _ = json.Marshal(cattle)
+	err = APIstub.PutState(args[0], cattleAsBytes)
+	if err != nil {
+		return shim.Error(fmt.Sprintf("Failed to update butchery information: %s", args[0]))
+	}
 
-    return shim.Success(nil)
+	return shim.Success(nil)
 }
 
 /*
- * The updatePackageInfoCow method *
-*/
-func (s *SmartContract) updatePackageInfoCow(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+ * The updateProcessInfo method *
+ */
+func (s *SmartContract) updateProcessInfo(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
-    if len(args) != 6 {
-        return shim.Error("[updatePackageInfoCow] Incorrect number of arguments. Expecting 6")
-    }
+	if len(args) != 6 {
+		return shim.Error("[updatePackageInfoCow] Incorrect number of arguments. Expecting 6")
+	}
 
-    if len(args[0]) != 12 {
-        return shim.Error("Inccorrect trace id. Expecting 12 digits")
-    }
+	if len(args[0]) != 12 {
+		return shim.Error("Inccorrect trace id. Expecting 12 digits")
+	}
 
-    package_amount, err := strconv.Atoi(args[4])
-    if err != nil {
-        // handle error
-        return shim.Error("Incorrect number for package amount")
-    }
+	packageAmount, err := strconv.Atoi(args[4])
+	if err != nil {
+		// handle error
+		return shim.Error("Incorrect number for package amount")
+	}
 
-    cowAsBytes, _ := APIstub.GetState(args[0])
-    if cowAsBytes == nil {
-        return shim.Error("Could not locate cow")
-    }
+	cattleAsBytes, _ := APIstub.GetState(args[0])
+	if cattleAsBytes == nil {
+		return shim.Error("Could not locate cattle")
+	}
 
-    var cow = Cow{}
+	var cattle = Cattle{}
 
-    json.Unmarshal(cowAsBytes, &cow)
+	json.Unmarshal(cattleAsBytes, &cattle)
 
-    var package_info Package_info
-    package_info = Package_info{ Company: args[1], Company_address: args[2], Cow_part: args[3],
-                                 Package_amount: package_amount, Package_date: args[5] }
+	var processInfo ProcessInfo
+	processInfo = ProcessInfo{ProcessPlaceNm: args[1], ProcessPlaceAddr: args[2], ProcessPart: args[3],
+		ProcessWeight: packageAmount, ProcessYmd: args[5]}
 
-    cow.Package_info = append(cow.Package_info, package_info)
+	cattle.ProcessInfo = append(cattle.ProcessInfo, processInfo)
 
-    cowAsBytes, _ = json.Marshal(cow)
-    err = APIstub.PutState(args[0], cowAsBytes)
-    if err != nil {
-        return shim.Error(fmt.Sprintf("Failed to register slaughter information: %s", args[0]))
-    }
+	cattleAsBytes, _ = json.Marshal(cattle)
+	err = APIstub.PutState(args[0], cattleAsBytes)
+	if err != nil {
+		return shim.Error(fmt.Sprintf("Failed to update process information: %s", args[0]))
+	}
 
-    return shim.Success(nil)
+	return shim.Success(nil)
 }
 
 /*
@@ -787,9 +794,9 @@ The main function starts the chaincode in the container during instantiation.
 */
 func main() {
 
-    // Create a new Smart Contract
-    err := shim.Start(new(SmartContract))
-    if err != nil {
-        fmt.Printf("Error creating new Smart Contract: %s", err)
-    }
+	// Create a new Smart Contract
+	err := shim.Start(new(SmartContract))
+	if err != nil {
+		fmt.Printf("Error creating new Smart Contract: %s", err)
+	}
 }

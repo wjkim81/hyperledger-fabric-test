@@ -76,10 +76,10 @@
       <div class="outer-div">
         <div class="form-group">
           <label>모든 소고기 정보</label>
-          <p><input id="queryAllCow" type="submit" value="Query" class="btn btn-primary" ng-click="queryAllCow()"></p>
+          <p><input id="queryAllCattle" type="submit" value="Query" class="btn btn-primary" ng-click="queryAllCattle()"></p>
         </div>
 
-        <table id="all_cow" class="table" align="center">
+        <table id="all_cattle" class="table" align="center">
           <tr>
             <th>이력번호</th>
             <th>농장주</th>
@@ -88,12 +88,12 @@
             <th>개체 종류</th>
           </tr>
 
-          <tr ng-repeat="cow in all_cow">
-            <td>{{cow.Key}}</td>
-            <td>{{cow.register_info[0].owner}}</td>
-            <td>{{cow.cow_id}}</td>
-            <td>{{cow.cow_birthday}}</td>
-            <td>{{cow.cow_category}}</td>
+          <tr ng-repeat="cattle in all_cattle">
+            <td>{{cattle.Key}}</td>
+            <td>{{cattle.farmInfo[0].farmerNm}}</td>
+            <td>{{cattle.cattleNo}}</td>
+            <td>{{cattle.birthYmd}}</td>
+            <td>{{cattle.lsTypeNm}}</td>
           </tr>
         </table>
       </div>  
@@ -101,13 +101,13 @@
       <div class="outer-div">  
         <div class="form-group">
           <label>이력 번호로 조회</label><br>
-          <h5 style="color:red;margin-bottom:2%" id="error_query">에러: 정확한 이력 번호(12자리)를 입력해 주세요.</h5>
+          <h5 style="color:red;margin-bottom:2%" id="error_query">에러: 이력 번호(12자리)가 잘못 입력되었습니다.</h5>
         
           Enter a catch number: <input id="createName" class="form-control" type="text" placeholder="Ex: 002021864077" ng-model="trace_id">
-          <input id="querySubmit" type="submit" value="Query" class="btn btn-primary" ng-click="queryCow()">
+          <input id="queryCattle" type="submit" value="Query" class="btn btn-primary" ng-click="queryCattle()">
         </div>
 
-        <table id="query_cow" class="table" align="center">
+        <table id="query_cattle" class="table" align="center">
           <tr>
             <th colspan="4">사육정보</th>
           </tr>
@@ -118,14 +118,14 @@
             <th>성별</th>
           </tr>
           <tr>
-            <td>{{query_cow.trace_id}}</td>
-            <td>{{query_cow.cow_birthday}}</td>
-            <td>{{query_cow.cow_category}}</td>
-            <td>{{query_cow.cow_sex}}</td>
+            <td>{{query_cattle.traceId}}</td>
+            <td>{{query_cattle.birthYmd}}</td>
+            <td>{{query_cattle.lsTypeNm}}</td>
+            <td>{{query_cattle.sexNm}}</td>
           </tr>
         </table>
 
-        <table id="query_cow" class="table" align="center">
+        <table id="query_cattle" class="table" align="center">
           <tr>
             <th colspan="4">소 출생 등 신고 정보</th>
           </tr>
@@ -136,14 +136,14 @@
             <th>사육지</th>
           </tr>
           <tr>
-            <td>{{query_cow.register_info[0].owner}}</td>
-            <td>{{query_cow.register_info[0].category}}</td>
-            <td>{{query_cow.register_info[0].date}}</td>
-            <td>{{query_cow.register_info[0].owner_address}}</td>
+            <td>{{query_cattle.farmInfo[0].farmerNm}}</td>
+            <td>{{query_cattle.farmInfo[0].regType}}</td>
+            <td>{{query_cattle.farmInfo[0].regYmd}}</td>
+            <td>{{query_cattle.farmInfo[0].farmAddr}}</td>
           </tr>
         </table>
 	    
-        <table id="query_cow" class="table" align="center">
+        <table id="query_cattle" class="table" align="center">
           <tr>
             <th colspan="6">도축 처리 정보</th>
           </tr>
@@ -156,16 +156,16 @@
             <th>도축처리업소</th>
           </tr>
           <tr>
-            <td>{{query_cow.slaughter_info.slaughter_house}}</td>
-            <td>{{query_cow.slaughter_info.slaughter_date}}</td>
-            <td>{{query_cow.slaughter_info.cow_result}}</td>
-            <td>{{query_cow.slaughter_info.cow_weight}}</td>
-            <td>{{query_cow.slaughter_info.cow_grade}}</td>
-            <td>{{query_cow.slaughter_info.slaughter_company}}</td>
+            <td>{{query_cattle.butcheryInfo.butcheryPlaceNm}}</td>
+            <td>{{query_cattle.butcheryInfo.butcheryYmd}}</td>
+            <td>{{query_cattle.butcheryInfo.inspectPassYn}}</td>
+            <td>{{query_cattle.butcheryInfo.butcheryWeight}}</td>
+            <td>{{query_cattle.butcheryInfo.gradeNm}}</td>
+            <td>{{query_cattle.butcheryInfo.processPlaceNm}}</td>
           </tr>
         </table>
 		
-        <table id="query_cow" class="table" align="center">
+        <table id="all_process_info" class="table" align="center">
           <tr>
             <th colspan="5">포장 처리 정보</th>
           </tr>
@@ -176,19 +176,19 @@
             <th>포장단위(g)</th>
             <th>포장일자</th>
           </tr>
-          <tr ng-repeat="package_info in all_package_info">
-            <td>{{package_info.company}}</td>
-            <td>{{package_info.company_address}}</td>
-            <td>{{package_info.cow_part}}</td>
-            <td>{{package_info.package_amount}}</td>
-            <td>{{package_info.package_date}}</td>
+          <tr ng-repeat="process_info in all_process_info">
+            <td>{{process_info.processPlaceNm}}</td>
+            <td>{{process_info.processPlaceAddr}}</td>
+            <td>{{process_info.processPart}}</td>
+            <td>{{process_info.processWeight}}</td>
+            <td>{{process_info.processYmd}}</td>
           </tr>
         </table>
 	    
-        <table id="query_cow" class="table" align="center">
+        <table id="query_cattle" class="table" align="center">
           <tr>
             <th colspan="6">구제역 백신접종 및 가축질병 검사 정보</th>
-            </tr>
+          </tr>
           <tr>
             <th>구제역 예방접종최종일자</th>
             <th>브루셀라 검사최종일자</th>
@@ -197,11 +197,11 @@
             <th>결핵 검사결과</th>
           </tr>
           <tr>
-            <td>{{query_cow.foot_and_mouth[0].vaccine_date}}</td>
-            <td>{{query_cow.brucelliasis[0].vaccine_date}}</td>
-            <td>{{query_cow.brucelliasis[0].vaccine_result}}</td>
-            <td>{{query_cow.tuberculosis[0].vaccine_date}}</td>
-            <td>{{query_cow.tuberculosis[0].vaccine_result}}</td>
+            <td>{{query_cattle.footAndMouth[0].injectionYmd}}</td>
+            <td>{{query_cattle.brucelliasis[0].injectionYmd}}</td>
+            <td>{{query_cattle.brucelliasis[0].injectionResult}}</td>
+            <td>{{query_cattle.tuberculosis[0].injectionYmd}}</td>
+            <td>{{query_cattle.tuberculosis[0].injectionResult}}</td>
           </tr>
         </table>
       </div>
@@ -209,52 +209,52 @@
       <div class="outer-div">
         <div class="form-group">
           <label>이력 번호 생성 (소 등록)</label>
-          <h5 style="color:green;margin-bottom:2%" id="success_register">Success! Tx ID: {{register_cow}}</h5>
+          <h5 style="color:green;margin-bottom:2%" id="success_register">Success! Tx ID: {{register_cattle}}</h5>
           <br>
-          이력번호: <input class="form-control" type="text" placeholder="Ex: 104021864078" ng-model="cow.trace_id">
+          이력번호: <input class="form-control" type="text" placeholder="Ex: 104021864078" ng-model="cattle.traceId">
           <!--
           농장식별번호: <input class="form-control" type="text" placeholder="Ex: 0239L" ng-model="cow.farm_id">
           개체식별번호: <input id="createName" class="form-control" type="text" placeholder="Ex: 28.012" ng-model="cow.cow_id"> 
           -->
-          출생년월일: <input id="createName" class="form-control" type="text" placeholder="Ex: 20121012" ng-model="cow.cow_birthday">
-          소의 종류: <input class="form-control" type="text" placeholder="Ex: 한우, 수입" ng-model="cow.cow_category">
-          성별: <input class="form-control" type="text" placeholder="Ex: 거세, 숫소, 암소" ng-model="cow.cow_sex">
-          소유주: <input id="createName" class="form-control" type="text" placeholder="Ex: 홍길동" ng-model="cow.owner">
-          신고구분: <input class="form-control" type="text" placeholder="Ex: 전산등록, 양수, 출하" ng-model="cow.register_category">
-          년월일: <input class="form-control" type="text" placeholder="Ex: 20130103" ng-model="cow.register_date">
-          사육지 주소: <input class="form-control" type="text" placeholder="Ex: 경기도 양주시 만송통" ng-model="cow.owner_address">
-          <input id="createSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="registerCow()"> 
+          출생년월일: <input id="createName" class="form-control" type="text" placeholder="Ex: 20121012" ng-model="cattle.birthYmd">
+          소의 종류: <input class="form-control" type="text" placeholder="Ex: 한우, 수입" ng-model="cattle.lsTypeNm">
+          성별: <input class="form-control" type="text" placeholder="Ex: 거세, 숫소, 암소" ng-model="cattle.sexNm">
+          소유주: <input class="form-control" type="text" placeholder="Ex: 홍길동" ng-model="cattle.farmerNm">
+          신고구분: <input class="form-control" type="text" placeholder="Ex: 전산등록, 양수, 출하" ng-model="cattle.regType">
+          년월일: <input class="form-control" type="text" placeholder="Ex: 20130103" ng-model="cattle.regYmd">
+          사육지 주소: <input class="form-control" type="text" placeholder="Ex: 경기도 양주시 만송통" ng-model="cattle.farmAddr">
+          <input id="registerSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="registerCattle()"> 
         </div>
       </div>
 	  
       <div class="outer-div">
         <div class="form-group">
           <label>도축 정보 등록</label>
-          <h5 style="color:green;margin-bottom:2%" id="success_update_butcher">Success! Tx ID: {{create_cow}}</h5>
+          <h5 style="color:green;margin-bottom:2%" id="success_update_butchery">Success! Tx ID: {{update_butchery}}</h5>
           <br>
-          이력번호: <input class="form-control" type="text" placeholder="Ex: 104021864078" ng-model="slaughter_info.trace_id">
-          도축장: <input class="form-control" type="text" placeholder="Ex: 우림축산 (경기도 동두천시 동두천동)" ng-model="slaughter_info.slaughter_house">
-          도축일자: <input class="form-control" type="text" placeholder="Ex: 20090611" ng-model="slaughter_info.slaughter_date">
-          도축검사결과: <input id="createName" class="form-control" type="text" placeholder="Ex: 합격, 불합격" ng-model="slaughter_info.cow_result"> 
-          도체중: <input id="createName" class="form-control" type="text" placeholder="Ex: 409" ng-model="slaughter_info.cow_weight">
-          육질등급: <input class="form-control" type="text" placeholder="Ex: 1++, 1+, 1, 2" ng-model="slaughter_info.cow_grade">
-          도축처리업소: <input class="form-control" type="text" placeholder="Ex: 양주축협가공공장 (경기도 양주시 고읍동)" ng-model="slaughter_info.slaughter_company">
-          <input id="updateSlaughterSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="updateSlaughterInfoCow()"> 
+          이력번호: <input class="form-control" type="text" placeholder="Ex: 104021864078" ng-model="butchery_info.traceId">
+          도축장: <input class="form-control" type="text" placeholder="Ex: 우림축산 (경기도 동두천시 동두천동)" ng-model="butchery_info.butcheryPlaceNm">
+          도축일자: <input class="form-control" type="text" placeholder="Ex: 20090611" ng-model="butchery_info.butcheryYmd">
+          도축검사결과: <input class="form-control" type="text" placeholder="Ex: 합격, 불합격" ng-model="butchery_info.inspectPassYn"> 
+          도체중: <input class="form-control" type="text" placeholder="Ex: 409" ng-model="butchery_info.butcheryWeight">
+          육질등급: <input class="form-control" type="text" placeholder="Ex: 1++, 1+, 1, 2" ng-model="butchery_info.gradeNm">
+          도축처리업소: <input class="form-control" type="text" placeholder="Ex: 양주축협가공공장 (경기도 양주시 고읍동)" ng-model="butchery_info.processPlaceNm">
+          <input id="butcherySubmit" type="submit" value="Create" class="btn btn-primary" ng-click="updateButcheryInfo()"> 
         </div>
       </div>
 	
       <div class="outer-div">
         <div class="form-group">
           <label>포장 정보 등록</label>
-          <h5 style="color:green;margin-bottom:2%" id="success_update_package">Success! Tx ID: {{create_cow}}</h5>
+          <h5 style="color:green;margin-bottom:2%" id="success_update_process">Success! Tx ID: {{update_process}}</h5>
           <br>
-          이력번호: <input class="form-control" type="text" placeholder="Ex: 104021864078" ng-model="package_info.trace_id">
-          포장회사: <input class="form-control" type="text" placeholder="Ex: 우림축산 (경기도 동두천시 동두천동)" ng-model="package_info.company">
-          포장회사주소: <input class="form-control" type="text" placeholder="Ex: 경기도 양주시 고읍동" ng-model="package_info.company_address">
-          포장부위: <input id="createName" class="form-control" type="text" placeholder="Ex: 안심, 등심, 채끝살 등등" ng-model="package_info.cow_part">
-          포장단위(g): <input id="createName" class="form-control" type="text" placeholder="Ex: 1000" ng-model="package_info.package_amount"> 
-          포장일자: <input id="createName" class="form-control" type="text" placeholder="Ex: 20140304" ng-model="package_info.package_date">
-          <input id="updatePackageSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="updatePackageInfoCow()"> 
+          이력번호: <input class="form-control" type="text" placeholder="Ex: 104021864078" ng-model="process_info.traceId">
+          포장회사: <input class="form-control" type="text" placeholder="Ex: 우림축산 (경기도 동두천시 동두천동)" ng-model="process_info.processPlaceNm">
+          포장회사주소: <input class="form-control" type="text" placeholder="Ex: 경기도 양주시 고읍동" ng-model="process_info.processPlaceAddr">
+          포장부위: <input class="form-control" type="text" placeholder="Ex: 안심, 등심, 채끝살 등등" ng-model="process_info.processPart">
+          포장단위(g): <input class="form-control" type="text" placeholder="Ex: 1000" ng-model="process_info.processWeight"> 
+          포장일자: <input id="createName" class="form-control" type="text" placeholder="Ex: 20140304" ng-model="process_info.processYmd">
+          <input id="processSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="updateProcessInfo()"> 
         </div>
       </div>
     </div>
