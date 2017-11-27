@@ -30,7 +30,6 @@ type SmartContract struct {
 /* Define Cow and Pork structure, with properties.
 Structure tags are used by encoding/json library
 */
-/*
 type Register_info struct { // *소출생 등 신고정보[]
     Owner         string `json:"owner"`         // 소유주
     Category      string `json:"category"`      // 신고구분
@@ -84,209 +83,27 @@ type Cow struct { // *소개체 정보
     Brucelliasis   []Brucelliasis   `json:"brucelliasis"`   // 브루셀[]
     Tuberculosis   []Tuberculosis   `json:"tuberculosis"`   // 결핵[]
 }
-*/
+
 /*
-data.go.kr에서 제공하는 open-api 데이터 조회를 기준으로 작성
-- 입력값
-TraceNo: 개체/이력/묶음번호
-OptionNo: 조회하려는 정보 옵션값
-    1~7: 개체/이력, 8~9 : 묶음
-    1: 개체(소), 사육(돼지)
-    2: 출생 등 신고(소)
-    3: 도축(소/돼지)
-    4: 포장(소/돼지)
-    5: 구제역백신(소)
-    6: 질병정보(소)
-    7: 브루셀라(소)
-    8: 묶음 기본정보(묶음)
-    9: 묶음구성내역(묶음)
-CorpNo:  묶음을 구성한 업소의 사업자 번호
-
-- 출력값
-기본 정보
-traceNoType: 소/돼지/묶음 구분
-    CATTLE/CATTLE_NO: 소 개체
-    CATTLE/LOT_NO: 소 묶음
-    PIG/PIG_NO: 돼지 이력
-    PIG/LOT_NO: 돼지 묶음
-infoType: 조회 정보 옵션값
-    1~7: 개체/이력, 8~9 : 묶음
-    1: 개체(소), 사육(돼지)
-    2: 출생 등 신고(소)
-    3: 도축(소/돼지)
-    4: 포장(소/돼지)
-    5: 구제역백신(소)
-    6: 질병정보(소)
-    7: 브루셀라(소) 
-    8: 묶음 기본정보(묶음)
-    9: 묶음구성내역(묶음)
-
-    항목명(영문)     항목명(국문)   항목크기    항목구분    샘플데이터         항목설명
-traceNoType: CATTLE/CATTLE_NO: 소 개체
-infoType = 1 o
-    BirthYmd      출생일자      10        1         20120317        출생년월일
-    CattleNo      소 개체번호    15       1         410002075264204 이력번호
-    FlatEartagNo  재귀표번호     10       0          x               재부착번호
-    LsTypeNm      소의 종류     20       1          한우             소의 종류
-    MonthDiff     수입경과월     10       0          0              수입경과월
-    NationNm      수입국가      20       0          x               수입국가
-    SexNm         성별         10       1          암              성별
-    FarmUniqueNo  농장식별번호   6        0          211058          농장식별번호
-
-infoType = 2 o
-    FarmAddr      사육지       200      1          강원도 원주시 호저면  사육지
-    FarmerNm      소유주       100      1          고정남             소유주
-    RegType       신고구분     20        1         전산등록            신고구분
-    RegYmd        년월일       8        1          20120319         년월일
-
-infoType = 3
-    ButcheryPlaceAddr  도축장 주소   200 1          경기도 안성시 일죽면 일생로  도축장 주소
-    ButcheryPlaceNm    도축장명     100 1           도드람LPC              도축장명
-    ButcheryYmd        도축일자     8   1           20170920             도축일자
-    GradeNm            등급명      20  0           1                    육질등급
-    InspectPassYn      위생검사 결과 1   0           합격                  위생검사결과 합격/불합격/보류
-
-infoType = 4
-    ProcessPlaceAddr   포장처리업소 주소   200    1   경기도 광주시 곤지암읍 경충대로   포장처리업소 주소
-    ProcessPlaceNm     포장처리업소명     50     1   우성육가공                    포장처리업소명
-
-infoType = 5
-    InjectionDayCnt 구제역 백신접종경과일   200    0       접종 후 2일 경과       구제역 백신접종경과일
-    InjectionYmd    구제역 백신접종일     8       0       20170918           구제역 예방접종최종일자
-    Vaccineorder    구제역 백신접종 차수   10      0       13차 구제역          백신접종 차수
-
-infoType = 6
-    InspectDesc      질병유무          100     0        x                   질병유무
-
-infoType = 7
-    InspectDt       브루셀라 접종일      8       0       20170911        브루셀라 검사최종일자
-    InspectYn       브루셀러 접종 유무    10      0       음성             브루셀라 검사결과
-
-traceNoType: CATTLE/LOT_NO: 소묶음
-infoType = 8
-    CorpNo           사업자번호        10       1       1178522046                사업자번호
-    LotNo            묶음번호         30       1        L01709271277007          묶음번호
-    ProcessPlaceAddr 묶음구성업소 주소   200     1       서울특별시 양천구 목동동로 257   묶음구성업소 주소
-    ProcessPlaceNm   묶음구성업소명     50       1       ㈜현대그린푸드목동점           묶음구성업소명
-
-infoType = 9
-    CattleNo            소 개체번호  15  1   410002075264204                 소 개체번호
-    CorpNo              사업자번호   10  1   1178522046                      사업자번호
-    FarmAddr            농장주소    200 1   강원도 원주시 호저면 매호리            농장주소
-    GradeNm             등급명     20  1   1                                등급명
-    LotNo               묶음번호    30  1   L01709271277007                  묶음번호
-    LsTypeNm            소의 종류   20  1   한우  소의 종류
-    ProcessPlaceAddr    묶음구성업소 주소   200 1   서울특별시 양천구 목동 916번지  포장처리업소 주소
-    ProcessPlaceNm      묶음구성업소명 50  1   ㈜현대그린푸드목동점               묶음구성업소명
-    ButcheryPlaceAddr   도축장 주소  200 1   경기도 안성시 일죽면 금산리 598번지   도축장 주소
-    ButcheryPlaceNm     도축장명    100 1   도드람LPC                       도축장명
-    ButcheryYmd         도축일자    8   1   20170920                       도축일자
-
-
-
-traceNoType: PIG/PIG_NO: 돼지 개체
-infoType = 1
-    FarmAddr             농장소재지   200 1   경상북도 포항시 북구 청하면 비학로     농장소재지
-    FarmerNm             농장경영자   100 1   강충열                          농장경영자
-    FarmUniqueNo         농장식별번호  6   1   700030                        농장식별번호
-    PigNo                이력번호    20  1   170003000058                   이력번호
-
-infoType = 2
-    ButcheryPlaceAddr    도축장 주소  200 1   경상북도 영천시 동강포길 29-5  도축장 주소
-    ButcheryPlaceNm      도축장명    100 1   (주)삼세   도축장명
-    ButcheryYmd          도축일자    8   1   20150730    도축일자
-    InspectPassYn        위생검사 결과     0   Y   합격 : Y, 불합격 : N, 보류 : H
-    PigNo                돼지 이력번호 20  1   170003000058    돼지 이력번호
-
-infoType = 3
-    GradeNm              등급명      20  0    -                             등급명
-    PigNo                돼지 이력번호 20  1   170003000058                   돼지 이력번호
-    ProcessPlaceAddr     포장처리업소 주소  200 1   경상남도 양산시 상북면 ,지하1층   포장처리업소 주소
-    ButcheryPlaceNm      도축장명     100 1      ㈜산청푸드                    도축장명
-    ProcessYmd           포장처리일자   8   1   20150731                     포장처리일자
-
-infoType = 8
-    CorpNo               사업자번호   10  1   6218176868                    사업자번호
-    GradeNm              등급명      20  0                                 등급명
-    LotNo                묶음번호    30  1    L11507319120001               묶음번호
-    ProcessPlaceAddr     포장처리업소 소재지  200 1   경상남도 양산시 상북면 충렬로 574, 지하1층  포장처리업소 소재지
-    ProcessPlaceNm       포장처리업소명 50  1   ㈜산청푸드                      포장처리업소명
-    ProcessYmd           포장처리일자  8   1   20150731                      포장처리일자
-
-infoType = 9
-    CorpNo               사업자번호   10  1   1992484871                    사업자번호
-    FarmAddr             농장 소재지  200 1   경상북도 포항시 북구 청하면 비학로 농장 소재지
-    FarmerNm             사육자명    100 1   강충열                           사육자명
-    PigNo                이력(묶음)번호    20  1   170003000058              이력(묶음)번호 
-    ButcheryPlaceAddr    도축장 주소  200 1   경상북도 영천시 도남동 695번지      도축장 주소
-    ButcheryPlaceNm      도축장명    100 1   (주)삼세                       도축장명
-    ButcheryYmd          도축일자    8   1   20150730                     도축일자
+Pork =                돼지개체 정보 = {
+id                    이력번호
+farm_id               농장식별번호 (??소유주가 바뀌면 농장식별번호는 바뀌나??)
+farm_owner            농장경영자
+farm_address          농장소재지
+slaughterhouse        도축장
+slaughter_address     소재지
+slaughter_date        도축일자
+inspection_result     도축검사결과
+package_info = [
+  {
+     company_name     업소명
+     company_address  소재지
+     package_date     포장일자
+     package_grade    등급
+  }
+]
+}
 */
-
-type FarmInfo struct { // 농장 정보 및 등록정보
-    FarmNo         string          `json:"farmNo"`            // 농장식별번호
-    FarmNm         string          `json:"farmNm"`            // 농장명
-    FarmAddr       string          `json:"farmAddr"`          // 농장주소
-    FarmerNm       string          `json:"farmerNm"`          // 소유주
-    RegType        string          `json:"regType"`           // 신고구분
-    RegYmd         string          `json:"regYmd"`            // 년월일
-}
-
-type ButcheryInfo struct {
-    ButcheryPlaceAddr  string      `json:"butcheryPlaceAddr"` // 도축장 주소
-    ButcheryPlaceNm    string      `json:"butcheryPlaceNm"`   // 도축장명
-    ButcheryYmd        string      `json:"butcheryYmd"`       // 도축일자
-    GradeNm            string      `json:"gradeNm"`           // 등급명 (육질등급)
-    InspectPassYn      string      `json:"inspectPassYn"`     // 위생검사 결과 (합격/불합격/보류)
-    ButcheryWeight     int         `json:"butcheryWeight"`    // 도체중
-    AbattCode          string      `json:"AbattCode"`         // 도축장코드
-    ProcessPlaceNm     string      `json:"processPlaceNm"`    // 가공장/도축처리업소
-}
-
-type FootAndMouth struct { // *구제역
-    InjectionYmd    string         `json:"injectionYmd"`      // 구제역 예방접종일자
-    InjectionResult string         `json:"injectionResult"`   // 구제역 검사결과
-}
-
-type Brucelliasis struct { // *브루셀라
-    InjectionYmd    string         `json:"injectionYmd"`      // 브루셀라 검사(최종)일자
-    InjectionResult string         `json:"injectionResult"`   // 브루셀라 검사결과
-}
-
-type Tuberculosis struct { // *결핵
-    InjectionYmd    string         `json:"injectionYmd"`      // 결핵 검사(최종)일자
-    InjectionResult string         `json:"injectionResult"`   // 결핵 검사결과
-}
-
-type ProcessInfo {
-    CorpNo             string       `json:"corpNo"`           // 사업자번호
-    LotNo              string       `json:"lotNo"`            // 묶음번호
-    ProcessPlaceAddr   string       `json:"processPlaceAddr"` // 포장처리업소 주소
-    ProcessPlaceNm     string       `json:"ProcessPlaceNm"`   // 포장처리업소명
-}
-
-type Cattle struct {
-    TraceId       string           `json:"traceId"`           // 이력번호
-    CattleNo       string          `json:"cattleNo"`          // 개체식별번호 = 이력번호
-    BirthYmd       string          `json:"birthYmd"`          // 출생년월일
-    FlatEartagNo   string          `json:"flatEartagNo"`      // 재부착번호
-    LsTypeCd       string          `json:"lsTypeCd"`          // 소의종류코드
-    LsTypeNm       string          `json:"lsTypeNm"`          // 소의종류
-    MonthDiff      int             `json:"monthDiff"`         // 수입경과월
-    nationNm       string          `json:"nationNm"`          // 수입국가
-    SexCd          string          `json:"sexCd"`             // 성별코드
-    SexNm          string          `json:"sexNm"`             // 성별
-
-    FarmInfo       []FarmInfo      `json:"farmInfo"`          // 농장 및 등록정보[]
-    ButcheryInfo   ButcheryInfo    `json:"butcheryInfo"`      // 도축정보 
-
-    FootAndMouth   []FootAndMouth  `json:"foot_and_mouth"`    // 구제역[]
-    Brucelliasis   []Brucelliasis  `json:"brucelliasis"`      // 브루셀라[]
-    Tuberculosis   []Tuberculosis  `json:"tuberculosis"`      // 결핵[]
-
-    ProcessInfo    []ProcessInfo   `json:"processInfo"`       // 포장정보[]
-}
-
 
 /*
  * The Init method *
@@ -478,18 +295,19 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface) sc.Respo
     return shim.Success(nil)
 }
 
-/*
- * The initLedger method *
-Will add test data (10 cow catches)to our network
-*/
+
 func (s *SmartContract) insertObjects(APIstub shim.ChaincodeStubInterface) sc.Response {
+
     
     var cow          Cow
     var trace_id     int
     var trace_id_str string
+    var cow_id_str   string
     var num_insert   int
 
-    cows := Cow{
+    fmt.Println("Inserting object")
+
+    cow = Cow{
         Trace_id:     "102021860000",
         Farm_id:      "020218",
         Cow_id:       "00000",
@@ -497,22 +315,22 @@ func (s *SmartContract) insertObjects(APIstub shim.ChaincodeStubInterface) sc.Re
         Cow_category: "한우",
         Cow_sex:      "거세",
         Register_info: []Register_info{
-            Register_info{
-                Owner:         "김영한",
-                Category:      "전산등록",
-                Date:          "20080111",
+            Register_info{     
+                Owner:         "홍길동",
+                Category:      "전산등록", 
+                Date:          "20080111", 
                 Owner_address: "경기도 양주시 만송통",
             },
-            Register_info{
-                Owner:         "양영귀",
+            Register_info{     
+                Owner:         "김철수",
                 Category:      "양수",
-                Date:          "20090611",
+                Date:          "20090611", 
                 Owner_address: "경기도 양주시 만송통",
             },
-            Register_info{
-                Owner:         "양영귀",
-                Category:      "도축출하",
-                Date:          "20090611",
+            Register_info{     
+                Owner:         "김철수",
+                Category:      "도축출하", 
+                Date:          "20090611", 
                 Owner_address: "경기도 양주시 만송통",
             },
         },
@@ -544,17 +362,24 @@ func (s *SmartContract) insertObjects(APIstub shim.ChaincodeStubInterface) sc.Re
         },
     }
 
+    
     i := 0
-    num_insert := 1000
+    num_insert = 1000
+    trace_id = 102021860000
     for i < num_insert {
         fmt.Println("i is ", i)
-        trace_id = strconv.atoi(cow.Trace_id) + 1
-        cow.Trace_id = trace_id
+        trace_id = trace_id + 1
+        trace_id_str = strconv.Itoa(trace_id)
+        cow_id_str = strconv.Itoa(100000 + i)
 
-        cowAsBytes, _ := json.Marshal(cows[i])
+        cow.Trace_id = trace_id_str
+        cow.Cow_id = cow_id_str
+        cow.Cow_category = "돼지" + trace_id_str
+
+        cowAsBytes, _ := json.Marshal(cow)
         //APIstub.PutState(strconv.Itoa(i+1), cowAsBytes)
-        APIstub.PutState(cows[i].Trace_id, cowAsBytes)
-        fmt.Println("Added", cows[i])
+        APIstub.PutState(cow.Trace_id, cowAsBytes)
+        fmt.Println("Added", cow)
         i = i + 1
     }
 
