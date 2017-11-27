@@ -374,7 +374,7 @@ func (s *SmartContract) insertObjects(APIstub shim.ChaincodeStubInterface) sc.Re
 
         cow.Trace_id = trace_id_str
         cow.Cow_id = cow_id_str
-        cow.Cow_category = "돼지" + trace_id_str
+        cow.Cow_category = "돼지" + strconv.Itoa(i)
 
         cowAsBytes, _ := json.Marshal(cow)
         //APIstub.PutState(strconv.Itoa(i+1), cowAsBytes)
