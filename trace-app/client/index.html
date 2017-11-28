@@ -69,13 +69,13 @@
   <body ng-app="application" ng-controller="appController">
     <header>
       <div id="left_header">Eatformation Traceability System 0.8</div>
-      <i id="right_header">With Hyperledger Fabric</i>
+      <!--<i id="right_header">With Hyperledger Fabric</i>-->
     </header>
 
     <div id="body">
       <div class="outer-div">
         <div class="form-group">
-          <label>모든 소고기 정보</label>
+          <label>모든 개체 정보</label>
           <p><input id="queryAllCow" type="submit" value="Query" class="btn btn-primary" ng-click="queryAllCow()"></p>
         </div>
 
@@ -103,7 +103,7 @@
           <label>이력 번호로 조회</label><br>
           <h5 style="color:red;margin-bottom:2%" id="error_query">에러: 정확한 이력 번호(12자리)를 입력해 주세요.</h5>
         
-          Enter a catch number: <input id="createName" class="form-control" type="text" placeholder="Ex: 002021864077" ng-model="trace_id">
+          개체 이력 번호를 입력: <input id="createName" class="form-control" type="text" placeholder="Ex: 002021864077" ng-model="trace_id">
           <input id="querySubmit" type="submit" value="Query" class="btn btn-primary" ng-click="queryCow()">
         </div>
 
@@ -114,7 +114,7 @@
           <tr>
             <th>이력번호</th>
             <th>출생년월일</th>
-            <th>소의 종류</th>
+            <th>개체 종류</th>
             <th>성별</th>
           </tr>
           <tr>
@@ -127,7 +127,7 @@
 
         <table id="query_cow" class="table" align="center">
           <tr>
-            <th colspan="4">소 출생 등 신고 정보</th>
+            <th colspan="4">개체 출생 등 신고 정보</th>
           </tr>
           <tr>
             <th>소유주</th>
@@ -208,7 +208,7 @@
 
       <div class="outer-div">
         <div class="form-group">
-          <label>이력 번호 생성 (소 등록)</label>
+          <label>이력 번호 생성 (개체 등록)</label>
           <h5 style="color:green;margin-bottom:2%" id="success_register">Success! Tx ID: {{register_cow}}</h5>
           <br>
           이력번호: <input class="form-control" type="text" placeholder="Ex: 104021864078" ng-model="cow.trace_id">
@@ -217,8 +217,8 @@
           개체식별번호: <input id="createName" class="form-control" type="text" placeholder="Ex: 28.012" ng-model="cow.cow_id"> 
           -->
           출생년월일: <input id="createName" class="form-control" type="text" placeholder="Ex: 20121012" ng-model="cow.cow_birthday">
-          소의 종류: <input class="form-control" type="text" placeholder="Ex: 한우, 수입" ng-model="cow.cow_category">
-          성별: <input class="form-control" type="text" placeholder="Ex: 거세, 숫소, 암소" ng-model="cow.cow_sex">
+          개체 종류: <input class="form-control" type="text" placeholder="Ex: 한우, 수입" ng-model="cow.cow_category">
+          성별: <input class="form-control" type="text" placeholder="Ex: 돼지, 거세, 숫소, 암소" ng-model="cow.cow_sex">
           소유주: <input id="createName" class="form-control" type="text" placeholder="Ex: 홍길동" ng-model="cow.owner">
           신고구분: <input class="form-control" type="text" placeholder="Ex: 전산등록, 양수, 출하" ng-model="cow.register_category">
           년월일: <input class="form-control" type="text" placeholder="Ex: 20130103" ng-model="cow.register_date">

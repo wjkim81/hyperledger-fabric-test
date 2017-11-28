@@ -2,6 +2,8 @@ chaincode/trace-app/trace
 trace-app/node_modules
 trace-app/docker-compose.yml
 trace-app/bin
+trace-app/err.log
+trace-app/out.log
 basic-network/bin/
 gitadd.sh
 gitcommit.sh
