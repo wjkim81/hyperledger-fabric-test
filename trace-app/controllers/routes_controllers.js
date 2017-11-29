@@ -11,33 +11,30 @@ module.exports = function(app){
   app.get('/query', function(req,res){
     res.sendFile(path.join(__dirname, '../views', 'query.html'));
   });
-  app.get('/update_butcher', function(req,res){
-    res.sendFile(path.join(__dirname, '../views', 'butcher.html'));
+  app.get('/update_butchery', function(req,res){
+    res.sendFile(path.join(__dirname, '../views', 'butchery.html'));
   });
-  app.get('/update_package', function(req,res){
+  app.get('/update_process', function(req,res){
     res.sendFile(path.join(__dirname, '../views', 'package.html'));
   });
 
 
-  app.get('/get_cow/:id', function(req, res){
-    obj.get_cow(req, res);
+  app.get('/get_cattle/:id', function(req, res){
+    obj.get_cattle(req, res);
   });
-  app.get('/add_cow/:cow', function(req, res){
-    obj.add_cow(req, res);
+  app.get('/add_cattle/:cattle', function(req, res){
+    obj.add_cattle(req, res);
   });
-  app.get('/get_all_cow', function(req, res){
-    obj.get_all_cow(req, res);
+  app.get('/get_all_cattle', function(req, res){
+    obj.get_all_cattle(req, res);
   });
-  app.get('/register_cow/:cow', function(req, res){
-    obj.register_cow(req, res);
+  app.get('/register_cattle/:cattle', function(req, res){
+    obj.register_cattle(req, res);
   });
-  app.get('/update_slaughter_info_cow/:slaughter_info', function(req, res){
-    obj.update_slaughter_info_cow(req, res);
+  app.get('/update_butchery_info/:butchery_info', function(req, res){
+    obj.update_butchery_info(req, res);
   });
-  app.get('/update_package_info_cow/:package_info', function(req, res){
-    obj.update_package_info_cow(req, res);
-  });
-  app.get('/cow_change_holder/:holder', function(req, res){
-    obj.change_holder(req, res);
+  app.get('/update_process_info/:process_info', function(req, res){
+    obj.update_process_info(req, res);
   });
 }

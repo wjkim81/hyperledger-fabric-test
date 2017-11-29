@@ -8,17 +8,16 @@ var app = angular.module('application', []);
 app.controller('appController', function($scope, appFactory){
 
     $("#success_holder").hide();
-    $("#success_create").hide();
     $("#success_register").hide();
-    $("#success_update_butcher").hide();
-    $("#success_update_package").hide();
+    $("#success_update_butchery").hide();
+    $("#success_update_process").hide();
     $("#error_holder").hide();
     $("#error_query").hide();
 
     // Create angular function for traceability system
-    $scope.queryAllCow = function(){
+    $scope.queryAllCattle = function(){
 
-        appFactory.queryAllCow(function(data){
+        appFactory.queryAllCattle(function(data){
             var array = [];
             for (var i = 0; i < data.length; i++){
                 //parseInt(data[i].Key);
@@ -29,18 +28,18 @@ app.controller('appController', function($scope, appFactory){
             array.sort(function(a, b) {
                 return parseFloat(a.Key) - parseFloat(b.Key);
             });
-            $scope.all_cow = array;
+            $scope.all_cattle = array;
         });
     }
 
-    $scope.queryCow = function(){
+    $scope.queryCattle = function(){
 
         var id = $scope.trace_id;
 
-        appFactory.queryCow(id, function(data){
-            $scope.query_cow = data;
+        appFactory.queryCattle(id, function(data){
+            $scope.query_cattle = data;
 
-            if ($scope.query_cow == "Could not locate cow"){
+            if ($scope.query_cattle == "Could not locate cattle"){
                 $("#error_query").show();
             } else{
                 $("#error_query").hide();
@@ -54,56 +53,33 @@ app.controller('appController', function($scope, appFactory){
             //    return parseFloat(a.Key) - parseFloat(b.Key);
             //}
             //$scope.all_package_info = array;
-            $scope.all_package_info = data.package_info; 
+            $scope.all_process_info = data.processInfo; 
         });
     }
 
-    $scope.registerCow = function(){
+    $scope.registerCattle = function(){
 
-        appFactory.registerCow($scope.cow, function(data){
-            $scope.register_cow = data;
+        appFactory.registerCattle($scope.cattle, function(data){
+            $scope.register_cattle = data;
             $("#success_register").show();
         });
     }
 
-    $scope.updateSlaughterInfoCow = function(){
+    $scope.updateButcheryInfo = function(){
 
-        appFactory.updateSlaughterInfoCow($scope.slaughter_info, function(data){
-            $scope.create_cow = data;
-            $("#success_update_butcher").show();
+        appFactory.updateButcheryInfo($scope.butchery_info, function(data){
+            $scope.update_butchery = data;
+            $("#success_update_butchery").show();
         });
     }
 
-    $scope.updatePackageInfoCow = function(){
+    $scope.updateProcessInfo = function(){
 
-        appFactory.updatePackageInfoCow($scope.package_info, function(data){
-            $scope.create_cow = data;
-            $("#success_update_package").show();
+        appFactory.updateProcessInfo($scope.process_info, function(data){
+            $scope.update_process = data;
+            $("#success_update_process").show();
         });
-    }
-
-    $scope.recordCow = function(){
-
-        appFactory.recordCow($scope.cow, function(data){
-            $scope.create_cow = data;
-            $("#success_create").show();
-        });
-    }   
-
-    $scope.changeHolder = function(){
-
-        appFactory.changeHolder($scope.holder, function(data){
-            $scope.change_holder = data;
-            if ($scope.change_holder == "Error: no cow catch found"){
-                $("#error_holder").show();
-                $("#success_holder").hide();
-            } else{             
-                $("#success_holder").show();
-                $("#error_holder").hide();
-            }               
-        });             
-    }    
-
+    } 
 });
 
 // Angular Factory
@@ -112,68 +88,46 @@ app.factory('appFactory', function($http){
     var factory = {};
 
     // For traceability system
-    factory.queryAllCow = function(callback){
+    factory.queryAllCattle = function(callback){
 
-        $http.get('/get_all_cow/').success(function(output){
+        $http.get('/get_all_cattle/').success(function(output){
             callback(output)
         });
     }
 
-    factory.queryCow = function(id, callback){
-        $http.get('/get_cow/'+id).success(function(output){
+    factory.queryCattle = function(id, callback){
+        $http.get('/get_cattle/'+id).success(function(output){
             callback(output)
         });
     }
 
-    factory.registerCow = function(data, callback){
+    factory.registerCattle = function(data, callback){
+        var cattle = data.traceId + "-" + data.birthYmd + "-" + data.lsTypeNm + "-" + data.sexNm + "-" +
+            data.farmerNm + "-" + data.regType + "-" + data.regYmd + "-" + data.farmAddr;
 
-        var cow = data.trace_id + "-" + data.cow_birthday + "-" + data.cow_category + "-" + data.cow_sex + "-" +
-            data.owner + "-" + data.register_category + "-" + data.register_date + "-" + data.owner_address;
-
-        $http.get('/register_cow/'+cow).success(function(output){
+        $http.get('/register_cattle/'+cattle).success(function(output){
             callback(output)
         });
     }
 
-    factory.updateSlaughterInfoCow = function(data, callback){
+    factory.updateButcheryInfo = function(data, callback){
 
-        var slaughter_info = data.trace_id + "-" + data.slaughter_house + "-" + data.slaughter_date + "-" +
-            data.cow_result + "-" + data.cow_weight + "-" + data.cow_grade + "-" + data.slaughter_company;
+        var butchery_info = data.traceId + "-" + data.butcheryPlaceNm + "-" + data.butcheryYmd + "-" +
+            data.inspectPassYn + "-" + data.butcheryWeight + "-" + data.gradeNm + "-" + data.processPlaceNm;
 
-        $http.get('/update_slaughter_info_cow/'+slaughter_info).success(function(output){
+        $http.get('/update_butchery_info/'+butchery_info).success(function(output){
             callback(output)
         });
     }
 
-    factory.updatePackageInfoCow = function(data, callback){
+    factory.updateProcessInfo = function(data, callback){
 
-        var package_info = data.trace_id + "-" + data.company + "-" + data.company_address + "-" +
-            data.cow_part + "-" + data.package_amount + "-" + data.package_date;
+        var process_info = data.traceId + "-" + data.processPlaceNm + "-" + data.processPlaceAddr + "-" +
+            data.processPart + "-" + data.processWeight + "-" + data.processYmd;
 
-        $http.get('/update_package_info_cow/'+package_info).success(function(output){
+        $http.get('/update_process_info/'+process_info).success(function(output){
             callback(output)
         });
     }
-
-    factory.recordCow = function(data, callback){
-
-        data.location = data.longitude + ", "+ data.latitude;
-
-        var cow = data.id + "-" + data.location + "-" + data.timestamp + "-" + data.holder + "-" + data.vessel;
-
-        $http.get('/add_cow/'+cow).success(function(output){
-            callback(output)
-        });
-    }
-
-    factory.changeHolder = function(data, callback){
-
-        var holder = data.id + "-" + data.name;
-
-        $http.get('/change_holder/'+holder).success(function(output){
-            callback(output)
-        });
-    }
-
     return factory;
 });

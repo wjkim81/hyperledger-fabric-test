@@ -76,13 +76,13 @@
       <div class="outer-div">  
         <div class="form-group">
           <label>이력 번호로 조회</label><br>
-          <h5 style="color:red;margin-bottom:2%" id="error_query">에러: 정확한 이력 번호(12자리)를 입력해 주세요.</h5>
+          <h5 style="color:red;margin-bottom:2%" id="error_query">에러: 이력 번호(12자리)가 잘못 입력되었습니다.</h5>
         
-          개체 이력 번호 입력: <input id="createName" class="form-control" type="text" placeholder="Ex: 002021864077" ng-model="trace_id">
-          <input id="querySubmit" type="submit" value="Query" class="btn btn-primary" ng-click="queryCow()">
+          이력번호 입력: <input id="createName" class="form-control" type="text" placeholder="Ex: 002021864077" ng-model="trace_id">
+          <input id="queryCattle" type="submit" value="Query" class="btn btn-primary" ng-click="queryCattle()">
         </div>
 
-        <table id="query_cow" class="table" align="center">
+        <table id="query_cattle" class="table" align="center">
           <tr>
             <th colspan="4">사육정보</th>
           </tr>
@@ -93,14 +93,14 @@
             <th>성별</th>
           </tr>
           <tr>
-            <td>{{query_cow.trace_id}}</td>
-            <td>{{query_cow.cow_birthday}}</td>
-            <td>{{query_cow.cow_category}}</td>
-            <td>{{query_cow.cow_sex}}</td>
+            <td>{{query_cattle.traceId}}</td>
+            <td>{{query_cattle.birthYmd}}</td>
+            <td>{{query_cattle.lsTypeNm}}</td>
+            <td>{{query_cattle.sexNm}}</td>
           </tr>
         </table>
 
-        <table id="query_cow" class="table" align="center">
+        <table id="query_cattle" class="table" align="center">
           <tr>
             <th colspan="4">개체 출생 등 신고 정보</th>
           </tr>
@@ -111,14 +111,14 @@
             <th>사육지</th>
           </tr>
           <tr>
-            <td>{{query_cow.register_info[0].owner}}</td>
-            <td>{{query_cow.register_info[0].category}}</td>
-            <td>{{query_cow.register_info[0].date}}</td>
-            <td>{{query_cow.register_info[0].owner_address}}</td>
+            <td>{{query_cattle.farmInfo[0].farmerNm}}</td>
+            <td>{{query_cattle.farmInfo[0].regType}}</td>
+            <td>{{query_cattle.farmInfo[0].regYmd}}</td>
+            <td>{{query_cattle.farmInfo[0].farmAddr}}</td>
           </tr>
         </table>
       
-        <table id="query_cow" class="table" align="center">
+        <table id="query_cattle" class="table" align="center">
           <tr>
             <th colspan="6">도축 처리 정보</th>
           </tr>
@@ -131,16 +131,16 @@
             <th>도축처리업소</th>
           </tr>
           <tr>
-            <td>{{query_cow.slaughter_info.slaughter_house}}</td>
-            <td>{{query_cow.slaughter_info.slaughter_date}}</td>
-            <td>{{query_cow.slaughter_info.cow_result}}</td>
-            <td>{{query_cow.slaughter_info.cow_weight}}</td>
-            <td>{{query_cow.slaughter_info.cow_grade}}</td>
-            <td>{{query_cow.slaughter_info.slaughter_company}}</td>
+            <td>{{query_cattle.butcheryInfo.butcheryPlaceNm}}</td>
+            <td>{{query_cattle.butcheryInfo.butcheryYmd}}</td>
+            <td>{{query_cattle.butcheryInfo.inspectPassYn}}</td>
+            <td>{{query_cattle.butcheryInfo.butcheryWeight}}</td>
+            <td>{{query_cattle.butcheryInfo.gradeNm}}</td>
+            <td>{{query_cattle.butcheryInfo.processPlaceNm}}</td>
           </tr>
         </table>
     
-        <table id="query_cow" class="table" align="center">
+        <table id="all_process_info" class="table" align="center">
           <tr>
             <th colspan="5">포장 처리 정보</th>
           </tr>
@@ -151,19 +151,19 @@
             <th>포장단위(g)</th>
             <th>포장일자</th>
           </tr>
-          <tr ng-repeat="package_info in all_package_info">
-            <td>{{package_info.company}}</td>
-            <td>{{package_info.company_address}}</td>
-            <td>{{package_info.cow_part}}</td>
-            <td>{{package_info.package_amount}}</td>
-            <td>{{package_info.package_date}}</td>
+          <tr ng-repeat="process_info in all_process_info">
+            <td>{{process_info.processPlaceNm}}</td>
+            <td>{{process_info.processPlaceAddr}}</td>
+            <td>{{process_info.processPart}}</td>
+            <td>{{process_info.processWeight}}</td>
+            <td>{{process_info.processYmd}}</td>
           </tr>
         </table>
       
-        <table id="query_cow" class="table" align="center">
+        <table id="query_cattle" class="table" align="center">
           <tr>
             <th colspan="6">구제역 백신접종 및 가축질병 검사 정보</th>
-            </tr>
+          </tr>
           <tr>
             <th>구제역 예방접종최종일자</th>
             <th>브루셀라 검사최종일자</th>
@@ -172,14 +172,15 @@
             <th>결핵 검사결과</th>
           </tr>
           <tr>
-            <td>{{query_cow.foot_and_mouth[0].vaccine_date}}</td>
-            <td>{{query_cow.brucelliasis[0].vaccine_date}}</td>
-            <td>{{query_cow.brucelliasis[0].vaccine_result}}</td>
-            <td>{{query_cow.tuberculosis[0].vaccine_date}}</td>
-            <td>{{query_cow.tuberculosis[0].vaccine_result}}</td>
+            <td>{{query_cattle.footAndMouth[0].injectionYmd}}</td>
+            <td>{{query_cattle.brucelliasis[0].injectionYmd}}</td>
+            <td>{{query_cattle.brucelliasis[0].injectionResult}}</td>
+            <td>{{query_cattle.tuberculosis[0].injectionYmd}}</td>
+            <td>{{query_cattle.tuberculosis[0].injectionResult}}</td>
           </tr>
         </table>
       </div>
+
     </div>
   </body>
   <!-- requiring the angular page -->
